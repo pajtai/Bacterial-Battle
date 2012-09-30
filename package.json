@@ -1,0 +1,31 @@
+{
+    "name": "Bacterial-Battle",
+    "title": "Bacterial Battle",
+    "description": "JavaScript fitness / evolution game",
+    "version": "0.1beta",
+    "homepage": "https://github.com/pajtai/Bacterial-Battle",
+    "author": {
+        "name": "Peter Ajtai",
+        "url": "https://github.com/pajtai"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/pajtai/Bacterial-Battle.git"
+    },
+    "bugs": {
+        "url": "https://github.com/pajtai/Bacterial-Battle/issues"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/pajtai/Bacterial-Battle/blob/master/MIT-LICENSE.txt"
+        }
+    ],
+    "dependencies": {
+        "grunt-clean": ">=0.3.0",
+        "grunt-coffee": ">=0.0.6",
+        "grunt-cp": ">=0.1.0",
+        "grunt-reload":">=0.2.0"
+    },
+    "keywords": []
+}
