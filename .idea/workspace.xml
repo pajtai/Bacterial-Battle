@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0f6c1837-008f-42e8-a221-4c2742335907" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index.html" afterPath="$PROJECT_DIR$/application/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/scripts/coffee/main.coffee" afterPath="$PROJECT_DIR$/application/scripts/coffee/main.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/scripts/javascript/main.js" afterPath="$PROJECT_DIR$/application/scripts/javascript/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grunt.js" afterPath="$PROJECT_DIR$/grunt.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <ignored path="Bacterial-Battle.iws" />
@@ -27,16 +29,16 @@
       <file leaf-file-name="grunt.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/grunt.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="71" column="25" selection-start="2153" selection-end="2153" vertical-scroll-proportion="0.0">
+            <state line="107" column="58" selection-start="3328" selection-end="3328" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.coffee" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="main.coffee" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/scripts/coffee/main.coffee">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="22" selection-start="65" selection-end="65" vertical-scroll-proportion="0.0">
+            <state line="30" column="53" selection-start="564" selection-end="564" vertical-scroll-proportion="0.5294118">
               <folding />
             </state>
           </provider>
@@ -45,37 +47,7 @@
       <file leaf-file-name="package.json" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="21" selection-start="146" selection-end="146" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="README.md" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider editor-type-id="MarkdownPreviewEditor">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="18" selection-start="78" selection-end="78" vertical-scroll-proportion="0.09047045">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".gitignore" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="12" selection-start="12" selection-end="12" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MIT-LICENSE.txt" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/MIT-LICENSE.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="30" selection-start="32" selection-end="32" vertical-scroll-proportion="0.0">
+            <state line="27" column="33" selection-start="829" selection-end="829" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -84,7 +56,7 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="7" selection-start="447" selection-end="447" vertical-scroll-proportion="0.0">
+            <state line="11" column="76" selection-start="420" selection-end="420" vertical-scroll-proportion="-6.875">
               <folding />
             </state>
           </provider>
@@ -103,13 +75,13 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/application/index.html" />
-        <option value="$PROJECT_DIR$/grunt.js" />
-        <option value="$PROJECT_DIR$/application/scripts/coffee/main.coffee" />
         <option value="$PROJECT_DIR$/MIT-LICENSE.txt" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/grunt.js" />
+        <option value="$PROJECT_DIR$/application/index.html" />
+        <option value="$PROJECT_DIR$/application/scripts/coffee/main.coffee" />
       </list>
     </option>
   </component>
@@ -215,10 +187,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="javascript" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -434,35 +402,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/scripts/javascript/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="7" selection-start="447" selection-end="447" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grunt.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="25" selection-start="2153" selection-end="2153" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/scripts/coffee/main.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="22" selection-start="65" selection-end="65" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MIT-LICENSE.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state line="2" column="30" selection-start="32" selection-end="32" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="15" selection-start="0" selection-end="108" vertical-scroll-proportion="0.12665862">
           <folding />
         </state>
       </provider>
@@ -476,17 +428,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="21" selection-start="146" selection-end="146" vertical-scroll-proportion="0.0">
+        <state line="27" column="33" selection-start="829" selection-end="829" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider editor-type-id="MarkdownPreviewEditor">
-        <state />
-      </provider>
+    <entry file="file://$PROJECT_DIR$/grunt.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="18" selection-start="78" selection-end="78" vertical-scroll-proportion="0.09047045">
+        <state line="107" column="58" selection-start="3328" selection-end="3328" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="76" selection-start="420" selection-end="420" vertical-scroll-proportion="-6.875">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/scripts/coffee/main.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="53" selection-start="564" selection-end="564" vertical-scroll-proportion="0.5294118">
           <folding />
         </state>
       </provider>

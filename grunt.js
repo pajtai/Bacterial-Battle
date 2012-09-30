@@ -46,6 +46,10 @@ module.exports = function(grunt) {
                 }
             },
 
+            beautify: {
+                files: [project.dirs.dev + project.files.javascript + "/" + project.files.any + project.files.dot.javascript]
+            },
+
             cp: {
                 live: {
                     src: project.dirs.dev,
@@ -98,9 +102,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-clean');
     grunt.loadNpmTasks('grunt-cp');
     grunt.loadNpmTasks('grunt-reload');
+    grunt.loadNpmTasks('grunt-beautify')
 
     // The main tasks.
-    grunt.registerTask('developer', 'clean coffee');
+    grunt.registerTask('developer', 'clean coffee beautify');
     grunt.registerTask('live', 'clean coffee sass cp:live clean:live');
 
     grunt.registerTask('reloadServer', 'server reload watch');
