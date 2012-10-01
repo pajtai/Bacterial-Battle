@@ -1,16 +1,28 @@
 (function () {
-  var BacB, BacteriumView, Config, MediumView, bacterium, medium;
+  var BacB, BacteriaModel, BacteriumView, Config, Mediator, MediumView, bacteria, mediator, paper;
 
   BacB = window.BacB;
 
   Config = BacB.Config;
 
+  Mediator = BacB.Mediator;
+
   MediumView = BacB.MediumView;
 
   BacteriumView = BacB.BacteriumView;
 
-  medium = new MediumView();
+  BacteriaModel = BacB.BacteriaModal;
 
-  bacterium = new BacteriumView(medium.raphael(), 100, 100, Config.BacteriumRadius);
+  paper = new MediumView();
+
+  bacteria = new BacteriaModel();
+
+  mediator = new Mediator(paper, bacteria);
+
+  paper.addMediator(mediator);
+
+  bacteria.addMediator(mediator);
+
+  bacteria.addPopulation(40);
 
 }).call(this);

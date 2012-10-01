@@ -1,5 +1,16 @@
 Config = window.BacB.Config
 
+class BacteriumView extends Backbone.View
+
+  initialize: ->
+    @x = @model.x
+    @y = @model.y
+    @radius = @model.radius
+    @buid = @model.buid
+
+  render: (@paper) ->
+    @paper.circle(@model.x, @model.y, @model.radius)
+
 # The medium on which the bacteria live
 class MediumView extends Backbone.View
 
@@ -7,22 +18,21 @@ class MediumView extends Backbone.View
 
   initialize: ->
     @render()
+    @bacteriumViews = []
+
+  addMediator: (@mediator) ->
 
   render: ->
-    @elMedium = Raphael(@el, Config.BoardWidth, Config.BoardHeight)
+    @paper = Raphael(@el, Config.BoardWidth, Config.BoardHeight)
 
   raphael: ->
-    @elMedium
+    @paper
 
-class BacteriumView extends Backbone.View
+  addBacterium: (bacterium) ->
+    bacteriumView = new BacteriumView({model: bacterium})
+    @bacteriumViews.push()
+    bacteriumView.render(@paper)
 
-  initialize: (@medium, @x, @y, @radius) ->
-    @render()
-
-  render: ->
-    console.log("circle")
-    @medium.circle(@x, @y, @radius)
-    console.log(medium)
 
 window.BacB.MediumView = MediumView
 window.BacB.BacteriumView = BacteriumView

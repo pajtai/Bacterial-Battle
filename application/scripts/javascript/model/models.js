@@ -26,31 +26,40 @@
     }
 
     BacteriaModel.prototype.initialize = function (population) {
-      var i, _i, _j, _len, _ref, _ref1, _results, _results1;
+      var _this = this;
       this.population = population;
-      this.bacteria = {};
-      _ref1 = (function () {
-        _results1 = [];
-        for (var _j = 0, _ref = this.population; 0 <= _ref ? _j <= _ref : _j >= _ref; 0 <= _ref ? _j++ : _j--) {
-          _results1.push(_j);
-        }
-        return _results1;
-      }).apply(this)(function () {
-        return this.addBacteria();
+      this.buid = 0;
+      this.bacteria = new BacteriumCollection();
+      return this.bacteria.on("add", function (bacterium) {
+        return _this.mediator.bacteriumModelAdded(bacterium);
       });
+    };
+
+    BacteriaModel.prototype.addMediator = function (mediator) {
+      this.mediator = mediator;
+    };
+
+    BacteriaModel.prototype.addPopulation = function (population) {
+      var i, _i, _ref, _results;
+      this.population = population;
       _results = [];
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        i = _ref1[_i];
-        _results.push(i);
+      for (i = _i = 1, _ref = this.population; _i <= _ref; i = _i += 1) {
+        _results.push(this.addBacteria());
       }
       return _results;
     };
 
     BacteriaModel.prototype.addBacteria = function () {
-      var c, x, y;
+      var c, radius, x, y;
       c = Config;
       x = _.random(0 + c.BacteriumRadius, c.BoardWidth - c.BacteriumRadius);
-      return y = _.random(0 + c.BacteriumRadius, c.BoardHeight - c.BacteriumRadius);
+      y = _.random(0 + c.BacteriumRadius, c.BoardHeight - c.BacteriumRadius);
+      radius = c.BacteriumRadius;
+      return this.bacteria.add(new BacteriumModel(this.getBuid(), x, y, radius));
+    };
+
+    BacteriaModel.prototype.getBuid = function () {
+      return ++this.buid;
     };
 
     return BacteriaModel;

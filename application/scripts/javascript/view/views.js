@@ -15,6 +15,30 @@
 
   Config = window.BacB.Config;
 
+  BacteriumView = (function (_super) {
+
+    __extends(BacteriumView, _super);
+
+    function BacteriumView() {
+      return BacteriumView.__super__.constructor.apply(this, arguments);
+    }
+
+    BacteriumView.prototype.initialize = function () {
+      this.x = this.model.x;
+      this.y = this.model.y;
+      this.radius = this.model.radius;
+      return this.buid = this.model.buid;
+    };
+
+    BacteriumView.prototype.render = function (paper) {
+      this.paper = paper;
+      return this.paper.circle(this.model.x, this.model.y, this.model.radius);
+    };
+
+    return BacteriumView;
+
+  })(Backbone.View);
+
   MediumView = (function (_super) {
 
     __extends(MediumView, _super);
@@ -26,44 +50,32 @@
     MediumView.prototype.el = $("#medium");
 
     MediumView.prototype.initialize = function () {
-      return this.render();
+      this.render();
+      return this.bacteriumViews = [];
+    };
+
+    MediumView.prototype.addMediator = function (mediator) {
+      this.mediator = mediator;
     };
 
     MediumView.prototype.render = function () {
-      return this.elMedium = Raphael(this.el, Config.BoardWidth, Config.BoardHeight);
+      return this.paper = Raphael(this.el, Config.BoardWidth, Config.BoardHeight);
     };
 
     MediumView.prototype.raphael = function () {
-      return this.elMedium;
+      return this.paper;
+    };
+
+    MediumView.prototype.addBacterium = function (bacterium) {
+      var bacteriumView;
+      bacteriumView = new BacteriumView({
+        model: bacterium
+      });
+      this.bacteriumViews.push();
+      return bacteriumView.render(this.paper);
     };
 
     return MediumView;
-
-  })(Backbone.View);
-
-  BacteriumView = (function (_super) {
-
-    __extends(BacteriumView, _super);
-
-    function BacteriumView() {
-      return BacteriumView.__super__.constructor.apply(this, arguments);
-    }
-
-    BacteriumView.prototype.initialize = function (medium, x, y, radius) {
-      this.medium = medium;
-      this.x = x;
-      this.y = y;
-      this.radius = radius;
-      return this.render();
-    };
-
-    BacteriumView.prototype.render = function () {
-      console.log("circle");
-      this.medium.circle(this.x, this.y, this.radius);
-      return console.log(medium);
-    };
-
-    return BacteriumView;
 
   })(Backbone.View);
 
