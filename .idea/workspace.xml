@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0f6c1837-008f-42e8-a221-4c2742335907" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/scripts/coffee/config.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/scripts/coffee/model/models.coffee" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/scripts/coffee/view/views.coffee" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index.html" afterPath="$PROJECT_DIR$/application/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/scripts/coffee/main.coffee" afterPath="$PROJECT_DIR$/application/scripts/coffee/main.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/scripts/javascript/main.js" afterPath="$PROJECT_DIR$/application/scripts/javascript/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grunt.js" afterPath="$PROJECT_DIR$/grunt.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/scripts/coffee/model/models.coffee" afterPath="$PROJECT_DIR$/application/scripts/coffee/model/models.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/scripts/javascript/model/models.js" afterPath="$PROJECT_DIR$/application/scripts/javascript/model/models.js" />
     </list>
     <ignored path="Bacterial-Battle.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,26 +23,61 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="87" selection-start="780" selection-end="780" vertical-scroll-proportion="-10.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="views.coffee" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/application/scripts/coffee/view/views.coffee">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="27" selection-start="27" selection-end="27" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf>
+          <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/application/index.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="16" column="87" selection-start="780" selection-end="780" vertical-scroll-proportion="-10.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="views.coffee" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/application/scripts/coffee/view/views.coffee">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="16" column="41" selection-start="313" selection-end="313" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="models.coffee" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/application/scripts/coffee/model/models.coffee">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="6" column="18" selection-start="134" selection-end="134" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="main.coffee" pinned="false" current="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/application/scripts/coffee/main.coffee">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="6" column="9" selection-start="135" selection-end="135" vertical-scroll-proportion="0.10752688">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="models.coffee" pinned="false" current="true" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/application/scripts/coffee/model/models.coffee">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="19" column="24" selection-start="489" selection-end="489" vertical-scroll-proportion="0.33529413">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -66,10 +96,10 @@
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/grunt.js" />
         <option value="$PROJECT_DIR$/application/scripts/coffee/config.coffee" />
-        <option value="$PROJECT_DIR$/application/scripts/coffee/model/models.coffee" />
         <option value="$PROJECT_DIR$/application/scripts/coffee/main.coffee" />
         <option value="$PROJECT_DIR$/application/index.html" />
         <option value="$PROJECT_DIR$/application/scripts/coffee/view/views.coffee" />
+        <option value="$PROJECT_DIR$/application/scripts/coffee/model/models.coffee" />
       </list>
     </option>
   </component>
@@ -227,32 +257,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="javascript" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Bacterial-Battle" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Bacterial-Battle" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="application" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="coffee" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -316,6 +320,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Javascript-Development-Sample" />
+    <property name="GoToClass.includeJavaFiles" value="false" />
   </component>
   <component name="PublishConfig">
     <servers>
@@ -374,7 +379,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2202052" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2202052" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -509,20 +514,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/scripts/coffee/model/models.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="12" selection-start="310" selection-end="310" vertical-scroll-proportion="0.21176471">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/scripts/coffee/main.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="9" selection-start="161" selection-end="161" vertical-scroll-proportion="0.12352941">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/scripts/javascript/config.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4" column="0" selection-start="43" selection-end="43" vertical-scroll-proportion="0.07058824">
@@ -546,7 +537,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/scripts/coffee/view/views.coffee">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="27" selection-start="27" selection-end="27" vertical-scroll-proportion="0.0">
+        <state line="16" column="41" selection-start="313" selection-end="313" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/scripts/coffee/main.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="9" selection-start="135" selection-end="135" vertical-scroll-proportion="0.10752688">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/scripts/coffee/model/models.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="24" selection-start="489" selection-end="489" vertical-scroll-proportion="0.33529413">
           <folding />
         </state>
       </provider>
