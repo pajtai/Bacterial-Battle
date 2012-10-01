@@ -1,30 +1,11 @@
-
-# The medium on which the bacteria live
-class MediumView extends Backbone.View
-
-  el: $("#medium")
-
-  initialize: ->
-    @render()
-
-  render: ->
-    @elMedium = Raphael(@el, 500, 500)
-
-  raphael: ->
-    @elMedium
-
-class BacteriumView extends Backbone.View
-
-  initialize: (@medium) ->
-    @render()
-
-  render: ->
-    console.log("circle")
-    @medium.circle(100, 100, 5)
-    console.log(medium)
+# import from global
+BacB = window.BacB
+Config = BacB.Config
+MediumView = BacB.MediumView
+BacteriumView = BacB.BacteriumView
 
 medium = new MediumView()
-bacterium1 = new BacteriumView(medium.raphael())
+bacterium = new BacteriumView(medium.raphael(), 100, 100, Config.BacteriumRadius)
 
 # TODO: config object
 # TODO: bg color

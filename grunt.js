@@ -34,7 +34,7 @@ module.exports = function(grunt) {
 
             coffee: {
                 app: {
-                    src: [project.dirs.dev + project.files.coffee + project.files.any + project.files.dot.coffee],
+                    src: [project.dirs.dev + project.files.coffee + "/" + project.files.any + project.files.dot.coffee],
                     dest: project.dirs.dev + project.files.javascript,
                     options: {
                         // No globals!
