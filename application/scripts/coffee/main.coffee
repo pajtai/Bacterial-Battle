@@ -18,7 +18,8 @@ bacteria.addMediator(mediator)
 
 # begin app
 
-bacteria.addPopulation(40)
+bacteria.addPopulation(20, 1)
+bacteria.addPopulation(20, 2)
 
 # TODO: bg color
 # TODO: multiple bacteria of random sizes and x colors

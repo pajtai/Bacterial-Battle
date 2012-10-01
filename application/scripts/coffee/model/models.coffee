@@ -13,16 +13,16 @@ class BacteriaModel extends Backbone.Model
 
   addMediator: (@mediator) ->
 
-  addPopulation: (@population) ->
-    for i in [1..@population] by 1
-      @addBacteria()
+  addPopulation: (population, clanid) ->
+    for i in [1..population] by 1
+      @addBacteria(clanid)
 
-  addBacteria: ->
+  addBacteria: (clanid) ->
     c = Config
     x = _.random(0 + c.BacteriumRadius, c.BoardWidth - c.BacteriumRadius);
     y = _.random(0 + c.BacteriumRadius, c.BoardHeight - c.BacteriumRadius);
     radius = c.BacteriumRadius
-    @bacteria.add(new BacteriumModel(@getBuid(), x, y, radius))
+    @bacteria.add(new BacteriumModel(@getBuid(), clanid, x, y, radius, clanid))
 
   getBuid: ->
     ++@buid
@@ -30,7 +30,7 @@ class BacteriaModel extends Backbone.Model
 
 class BacteriumModel extends Backbone.Model
 
-  initialize: (@buid, @x, @y, @radius) ->
+  initialize: (@buid, @clanid, @x, @y, @radius) ->
 
 
 class BacteriumCollection extends Backbone.Collection

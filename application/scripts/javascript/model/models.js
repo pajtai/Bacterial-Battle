@@ -39,23 +39,22 @@
       this.mediator = mediator;
     };
 
-    BacteriaModel.prototype.addPopulation = function (population) {
-      var i, _i, _ref, _results;
-      this.population = population;
+    BacteriaModel.prototype.addPopulation = function (population, clanid) {
+      var i, _i, _results;
       _results = [];
-      for (i = _i = 1, _ref = this.population; _i <= _ref; i = _i += 1) {
-        _results.push(this.addBacteria());
+      for (i = _i = 1; _i <= population; i = _i += 1) {
+        _results.push(this.addBacteria(clanid));
       }
       return _results;
     };
 
-    BacteriaModel.prototype.addBacteria = function () {
+    BacteriaModel.prototype.addBacteria = function (clanid) {
       var c, radius, x, y;
       c = Config;
       x = _.random(0 + c.BacteriumRadius, c.BoardWidth - c.BacteriumRadius);
       y = _.random(0 + c.BacteriumRadius, c.BoardHeight - c.BacteriumRadius);
       radius = c.BacteriumRadius;
-      return this.bacteria.add(new BacteriumModel(this.getBuid(), x, y, radius));
+      return this.bacteria.add(new BacteriumModel(this.getBuid(), clanid, x, y, radius, clanid));
     };
 
     BacteriaModel.prototype.getBuid = function () {
@@ -74,8 +73,9 @@
       return BacteriumModel.__super__.constructor.apply(this, arguments);
     }
 
-    BacteriumModel.prototype.initialize = function (buid, x, y, radius) {
+    BacteriumModel.prototype.initialize = function (buid, clanid, x, y, radius) {
       this.buid = buid;
+      this.clanid = clanid;
       this.x = x;
       this.y = y;
       this.radius = radius;
