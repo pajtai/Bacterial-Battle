@@ -17,31 +17,25 @@ class BacteriumView extends Backbone.View
   colorSelf: ->
     color = @getColor()
     @self.attr("fill", color)
-    @self.attr("stroke", "#adadad");
+    @self.attr("stroke", Config.Stroke);
 
-
-  # TODO: fix this method - it is horrible and flawed
   getColor: ->
+
     color = Config.Colors.clanid[@clanid]
+
     if not color
 
-      i = 0
-      for oneColor of Config.Colors.choices
-        do (oneColor) ->
-          ++i
+      if Config.Colors.used.length is Config.Colors.choices.length
+        console.log("ERROR: too many clans! Add colors")
+        return "#000000"
 
-      length = i
-      choice = _.random(1, length)
-      i = 1
-      for oneColor of Config.Colors.choices
-        if i == choice
-          do (oneColor) =>
-            color = Config.Colors.choices[oneColor]
-            delete Config.Colors.choices[oneColor]
+      loop
+        index = _.random(1, Config.Colors.choices.length) - 1
+        color = Config.Colors.choices[index]
+        break if color not in Config.Colors.used
 
-            Config.Colors.clanid[@clanid] = color
-        else
-          ++i
+      Config.Colors.clanid[@clanid] = color
+      Config.Colors.used.push(color)
 
     color
 
@@ -53,6 +47,10 @@ class BacteriumView extends Backbone.View
                       "x:" + @x + "<br/>" +
                       "y:" + @y)
 
+  move: (x, y) ->
+    @self.attr("x", x)
+    @self.attr("y", y)
+
 
 # The medium on which the bacteria live
 class MediumView extends Backbone.View
@@ -61,7 +59,7 @@ class MediumView extends Backbone.View
 
   initialize: ->
     @render()
-    @bacteriumViews = []
+    @bacteriumViews = {}
 
   addMediator: (@mediator) ->
 
@@ -71,10 +69,14 @@ class MediumView extends Backbone.View
   raphael: ->
     @paper
 
+  # TODO: move is not working
   addBacterium: (bacterium) ->
     bacteriumView = new BacteriumView({model: bacterium})
-    @bacteriumViews.push()
+    # @bacteriumViews["buid#{bacterium.buid}" ] = bacterium
     bacteriumView.render(@paper)
+
+  moveBacterium: (bacterium) ->
+    @bacteriumViews["buid#{bacterium.buid}"].move(bacterium.x, bacterium.y)
 
 
 window.BacB.MediumView = MediumView

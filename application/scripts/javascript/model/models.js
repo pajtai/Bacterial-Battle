@@ -49,16 +49,30 @@
     };
 
     BacteriaModel.prototype.addBacteria = function (clanid) {
-      var c, radius, x, y;
+      var bac, c, radius, x, y, _this = this;
       c = Config;
       x = _.random(0 + c.BacteriumRadius, c.BoardWidth - c.BacteriumRadius);
       y = _.random(0 + c.BacteriumRadius, c.BoardHeight - c.BacteriumRadius);
       radius = c.BacteriumRadius;
-      return this.bacteria.add(new BacteriumModel(this.getBuid(), clanid, x, y, radius, clanid));
+      bac = new BacteriumModel(this.getBuid(), clanid, x, y, radius, clanid);
+      bac.on("change", function (bacterium) {
+        console.log("changed" + bacterium);
+        return _this.mediator.bacteriumMoved(bacterium);
+      });
+      return this.bacteria.add(bac);
     };
 
     BacteriaModel.prototype.getBuid = function () {
       return ++this.buid;
+    };
+
+    BacteriaModel.prototype.move = function () {
+      var _this = this;
+      return setInterval(function () {
+        return _this.bacteria.forEach(function (bacterium) {
+          return bacterium.move();
+        });
+      }, 1000);
     };
 
     return BacteriaModel;
@@ -79,6 +93,17 @@
       this.x = x;
       this.y = y;
       this.radius = radius;
+    };
+
+    BacteriumModel.prototype.move = function () {
+      var range;
+      range = Config.Bacterium.maxMovement;
+      if (this.buid === 1) {
+        console.log("y is " + this.y);
+      }
+      this.x = this.x + _.random(-1 * range, range);
+      this.y = this.y + _.random(-1 * range, range);
+      return this.trigger("change", this);
     };
 
     return BacteriumModel;

@@ -32,6 +32,10 @@
       return this.medium.addBacterium(bacterium);
     };
 
+    Mediator.prototype.bacteriumMoved = function (bacterium) {
+      return this.medium.moveBacterium(bacterium);
+    };
+
     return Mediator;
 
   })(Backbone.Model);

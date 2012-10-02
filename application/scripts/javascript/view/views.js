@@ -11,6 +11,13 @@
       child.prototype = new ctor();
       child.__super__ = parent.prototype;
       return child;
+      },
+      __indexOf = [].indexOf ||
+      function (item) {
+      for (var i = 0, l = this.length; i < l; i++) {
+        if (i in this && this[i] === item) return i;
+      }
+      return -1;
       };
 
   Config = window.BacB.Config;
@@ -42,34 +49,26 @@
       var color;
       color = this.getColor();
       this.self.attr("fill", color);
-      return this.self.attr("stroke", "#adadad");
+      return this.self.attr("stroke", Config.Stroke);
     };
 
     BacteriumView.prototype.getColor = function () {
-      var choice, color, i, length, oneColor, _fn, _this = this;
+      var color, index;
       color = Config.Colors.clanid[this.clanid];
       if (!color) {
-        i = 0;
-        _fn = function (oneColor) {
-          return ++i;
-        };
-        for (oneColor in Config.Colors.choices) {
-          _fn(oneColor);
+        if (Config.Colors.used.length === Config.Colors.choices.length) {
+          console.log("ERROR: too many clans! Add colors");
+          return "#000000";
         }
-        length = i;
-        choice = _.random(1, length);
-        i = 1;
-        for (oneColor in Config.Colors.choices) {
-          if (i === choice) {
-            (function (oneColor) {
-              color = Config.Colors.choices[oneColor];
-              delete Config.Colors.choices[oneColor];
-              return Config.Colors.clanid[_this.clanid] = color;
-            })(oneColor);
-          } else {
-            ++i;
+        while (true) {
+          index = _.random(1, Config.Colors.choices.length) - 1;
+          color = Config.Colors.choices[index];
+          if (__indexOf.call(Config.Colors.used, color) < 0) {
+            break;
           }
         }
+        Config.Colors.clanid[this.clanid] = color;
+        Config.Colors.used.push(color);
       }
       return color;
     };
@@ -79,6 +78,11 @@
       return this.self.click(function () {
         return $("#info").html("buid: " + _this.buid + "<br/>" + "clan: " + _this.clanid + "<br/>" + "x:" + _this.x + "<br/>" + "y:" + _this.y);
       });
+    };
+
+    BacteriumView.prototype.move = function (x, y) {
+      this.self.attr("x", x);
+      return this.self.attr("y", y);
     };
 
     return BacteriumView;
@@ -97,7 +101,7 @@
 
     MediumView.prototype.initialize = function () {
       this.render();
-      return this.bacteriumViews = [];
+      return this.bacteriumViews = {};
     };
 
     MediumView.prototype.addMediator = function (mediator) {
@@ -117,8 +121,11 @@
       bacteriumView = new BacteriumView({
         model: bacterium
       });
-      this.bacteriumViews.push();
       return bacteriumView.render(this.paper);
+    };
+
+    MediumView.prototype.moveBacterium = function (bacterium) {
+      return this.bacteriumViews["buid" + bacterium.buid].move(bacterium.x, bacterium.y);
     };
 
     return MediumView;

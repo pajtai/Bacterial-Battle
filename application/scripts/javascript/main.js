@@ -23,8 +23,12 @@
 
   bacteria.addMediator(mediator);
 
-  bacteria.addPopulation(20, 1);
+  bacteria.addPopulation(10, "c1");
 
-  bacteria.addPopulation(20, 2);
+  bacteria.addPopulation(10, "c2");
+
+  bacteria.addPopulation(10, "c3");
+
+  bacteria.move();
 
 }).call(this);

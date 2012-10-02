@@ -7,5 +7,9 @@ class Mediator extends Backbone.Model
   bacteriumModelAdded: (bacterium) ->
     @medium.addBacterium(bacterium)
 
+  bacteriumMoved: (bacterium) ->
+    @medium.moveBacterium(bacterium)
+
+
 
 window.BacB.Mediator = Mediator

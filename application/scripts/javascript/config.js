@@ -7,13 +7,12 @@
     BacteriumRadius: 10,
     Colors: {
       clanid: {},
-      choices: {
-        blue: "#0000FF",
-        cyan: "#00FFFF",
-        darkOrchid: "#9932CC",
-        darkRed: "#8B0000"
-      },
-      used: {}
+      choices: ["#0000FF", "#00FFFF", "#9932CC", "#8B0000"],
+      used: []
+    },
+    Stroke: "#adadad",
+    Bacterium: {
+      maxMovement: 50
     }
   };
 
