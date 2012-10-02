@@ -31,16 +31,15 @@
     }
 
     BacteriumView.prototype.initialize = function () {
-      this.x = this.model.x;
-      this.y = this.model.y;
-      this.radius = this.model.radius;
-      this.buid = this.model.buid;
-      return this.clanid = this.model.clanid;
+      this.buid = this.model.get('buid');
+      return this.clanid = this.model.get('clanid');
     };
 
     BacteriumView.prototype.render = function (paper) {
+      var position;
       this.paper = paper;
-      this.self = this.paper.circle(this.model.x, this.model.y, this.model.radius);
+      position = this.model.get('position');
+      this.self = this.paper.circle(position.x, position.y, this.model.get('radius'));
       this.colorSelf();
       return this.addListeners();
     };
@@ -76,13 +75,17 @@
     BacteriumView.prototype.addListeners = function () {
       var _this = this;
       return this.self.click(function () {
-        return $("#info").html("buid: " + _this.buid + "<br/>" + "clan: " + _this.clanid + "<br/>" + "x:" + _this.x + "<br/>" + "y:" + _this.y);
+        var position;
+        position = _this.model.get('position');
+        return $("#info").html("buid: " + _this.buid + "<br/>" + "clan: " + _this.clanid + "<br/>" + "x:" + position.x + "<br/>" + "y:" + position.y);
       });
     };
 
-    BacteriumView.prototype.move = function (x, y) {
-      this.self.attr("x", x);
-      return this.self.attr("y", y);
+    BacteriumView.prototype.move = function () {
+      var position;
+      position = this.model.get('position');
+      this.self.attr("cx", position.x);
+      return this.self.attr("cy", position.y);
     };
 
     return BacteriumView;
@@ -121,11 +124,12 @@
       bacteriumView = new BacteriumView({
         model: bacterium
       });
+      this.bacteriumViews["buid" + (bacterium.get('buid'))] = bacteriumView;
       return bacteriumView.render(this.paper);
     };
 
     MediumView.prototype.moveBacterium = function (bacterium) {
-      return this.bacteriumViews["buid" + bacterium.buid].move(bacterium.x, bacterium.y);
+      return this.bacteriumViews["buid" + (bacterium.get('buid'))].move();
     };
 
     return MediumView;

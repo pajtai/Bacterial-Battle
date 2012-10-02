@@ -13,7 +13,8 @@ Config =
     used: []
   Stroke: "#adadad"
   Bacterium:
-    maxMovement: 50
+    maxMovement: 3
+    tick: 1000 / 60
 
 
 

@@ -25,8 +25,7 @@ class BacteriaModel extends Backbone.Model
 
     bac = new BacteriumModel(@getBuid(), clanid, x, y, radius, clanid)
 
-    bac.on "change", (bacterium) =>
-      console.log("changed" + bacterium)
+    bac.on "change:position", (bacterium) =>
       @mediator.bacteriumMoved(bacterium)
 
     @bacteria.add(bac)
@@ -38,24 +37,36 @@ class BacteriaModel extends Backbone.Model
     setInterval =>
       @bacteria.forEach (bacterium) =>
         bacterium.move()
-    , 1000
+    , Config.Bacterium.tick
 
 
 
 
 class BacteriumModel extends Backbone.Model
 
-  initialize: (@buid, @clanid, @x, @y, @radius) ->
+  initialize: (buid, clanid, x, y, radius) ->
+    @set
+      'buid': buid
+      'clanid': clanid
+      'position':
+        'x': x
+        'y': y
+      'radius': radius
 
   move: ->
     range = Config.Bacterium.maxMovement
-    if @buid is 1
-      console.log("y is #{@y}")
 
-    @x = @x + _.random(-1 * range, range)
-    @y = @y + _.random(-1 * range, range)
+    position = @get('position')
 
-    @trigger "change", @
+    # TODO: try to reuse existing
+    newPosition =
+      'x': position.x + _.random(-1 * range, range)
+      'y': position.y + _.random(-1 * range, range)
+
+    @set
+      'position': newPosition
+
+
 
 
 class BacteriumCollection extends Backbone.Collection

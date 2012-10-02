@@ -55,8 +55,7 @@
       y = _.random(0 + c.BacteriumRadius, c.BoardHeight - c.BacteriumRadius);
       radius = c.BacteriumRadius;
       bac = new BacteriumModel(this.getBuid(), clanid, x, y, radius, clanid);
-      bac.on("change", function (bacterium) {
-        console.log("changed" + bacterium);
+      bac.on("change:position", function (bacterium) {
         return _this.mediator.bacteriumMoved(bacterium);
       });
       return this.bacteria.add(bac);
@@ -72,7 +71,7 @@
         return _this.bacteria.forEach(function (bacterium) {
           return bacterium.move();
         });
-      }, 1000);
+      }, Config.Bacterium.tick);
     };
 
     return BacteriaModel;
@@ -88,22 +87,28 @@
     }
 
     BacteriumModel.prototype.initialize = function (buid, clanid, x, y, radius) {
-      this.buid = buid;
-      this.clanid = clanid;
-      this.x = x;
-      this.y = y;
-      this.radius = radius;
+      return this.set({
+        'buid': buid,
+        'clanid': clanid,
+        'position': {
+          'x': x,
+          'y': y
+        },
+        'radius': radius
+      });
     };
 
     BacteriumModel.prototype.move = function () {
-      var range;
+      var newPosition, position, range;
       range = Config.Bacterium.maxMovement;
-      if (this.buid === 1) {
-        console.log("y is " + this.y);
-      }
-      this.x = this.x + _.random(-1 * range, range);
-      this.y = this.y + _.random(-1 * range, range);
-      return this.trigger("change", this);
+      position = this.get('position');
+      newPosition = {
+        'x': position.x + _.random(-1 * range, range),
+        'y': position.y + _.random(-1 * range, range)
+      };
+      return this.set({
+        'position': newPosition
+      });
     };
 
     return BacteriumModel;

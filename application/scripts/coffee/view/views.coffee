@@ -2,15 +2,15 @@ Config = window.BacB.Config
 
 class BacteriumView extends Backbone.View
 
+  # Each bacterium view is initialized with its corresponding models,
+  # since the relationship is 1:1 and permanent
   initialize: ->
-    @x = @model.x
-    @y = @model.y
-    @radius = @model.radius
-    @buid = @model.buid
-    @clanid = @model.clanid
+    @buid = @model.get('buid')
+    @clanid = @model.get('clanid')
 
   render: (@paper) ->
-    @self = @paper.circle(@model.x, @model.y, @model.radius)
+    position = @model.get('position')
+    @self = @paper.circle(position.x, position.y, @model.get('radius'))
     @colorSelf()
     @addListeners()
 
@@ -42,14 +42,17 @@ class BacteriumView extends Backbone.View
   addListeners: ->
     @self.click =>
       # TODO: have mediator handler this
+      position = @model.get('position')
       $("#info").html("buid: " + @buid + "<br/>" +
                       "clan: " + @clanid + "<br/>" +
-                      "x:" + @x + "<br/>" +
-                      "y:" + @y)
+                      "x:" + position.x + "<br/>" +
+                      "y:" + position.y)
 
-  move: (x, y) ->
-    @self.attr("x", x)
-    @self.attr("y", y)
+  move: () ->
+
+    position = @model.get('position')
+    @self.attr("cx", position.x)
+    @self.attr("cy", position.y)
 
 
 # The medium on which the bacteria live
@@ -72,11 +75,12 @@ class MediumView extends Backbone.View
   # TODO: move is not working
   addBacterium: (bacterium) ->
     bacteriumView = new BacteriumView({model: bacterium})
-    # @bacteriumViews["buid#{bacterium.buid}" ] = bacterium
+    @bacteriumViews["buid#{bacterium.get('buid')}" ] = bacteriumView
     bacteriumView.render(@paper)
 
   moveBacterium: (bacterium) ->
-    @bacteriumViews["buid#{bacterium.buid}"].move(bacterium.x, bacterium.y)
+
+    @bacteriumViews["buid#{bacterium.get('buid')}"].move()
 
 
 window.BacB.MediumView = MediumView
