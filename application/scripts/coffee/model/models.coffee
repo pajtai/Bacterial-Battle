@@ -8,25 +8,27 @@ class BacteriaModel extends Backbone.Model
     @bacteria = new BacteriumCollection()
 
     # fat arrow binds "this" to callback (self = this)
+    # listen for the addition of bacteria to the collection
     @bacteria.on "add", (bacterium) =>
       @mediator.bacteriumModelAdded(bacterium)
+
+    # listen to changes in position of the bacteria in the collection
+    @bacteria.on "change:position", (bacterium) =>
+      @mediator.bacteriumMoved(bacterium)
 
   addMediator: (@mediator) ->
 
   addPopulation: (population, clanid) ->
     for i in [1..population] by 1
-      @addBacteria(clanid)
+      @addBacterium(clanid)
 
-  addBacteria: (clanid) ->
+  addBacterium: (clanid) ->
     c = Config
     x = _.random(0 + c.BacteriumRadius, c.BoardWidth - c.BacteriumRadius);
     y = _.random(0 + c.BacteriumRadius, c.BoardHeight - c.BacteriumRadius);
     radius = c.BacteriumRadius
 
     bac = new BacteriumModel(@getBuid(), clanid, x, y, radius, clanid)
-
-    bac.on "change:position", (bacterium) =>
-      @mediator.bacteriumMoved(bacterium)
 
     @bacteria.add(bac)
 
@@ -36,7 +38,8 @@ class BacteriaModel extends Backbone.Model
   move: ->
     setInterval =>
       @bacteria.forEach (bacterium) =>
-        bacterium.move()
+        bacterium.update()
+      @mediator.tick()
     , Config.Bacterium.tick
 
 
@@ -52,6 +55,14 @@ class BacteriumModel extends Backbone.Model
         'x': x
         'y': y
       'radius': radius
+      'vector' :
+        'angle' : false
+        'length': false
+      'age' : 0
+
+  update: ->
+    @move()
+    @age()
 
   move: ->
     range = Config.Bacterium.maxMovement
@@ -66,7 +77,9 @@ class BacteriumModel extends Backbone.Model
     @set
       'position': newPosition
 
-
+  age: ->
+    @set
+      'age' : @get('age') + 1
 
 
 class BacteriumCollection extends Backbone.Collection

@@ -32,7 +32,9 @@
 
     BacteriumView.prototype.initialize = function () {
       this.buid = this.model.get('buid');
-      return this.clanid = this.model.get('clanid');
+      this.clanid = this.model.get('clanid');
+      this.glow = false;
+      return this.removeGlowOnNext = false;
     };
 
     BacteriumView.prototype.render = function (paper) {
@@ -40,8 +42,7 @@
       this.paper = paper;
       position = this.model.get('position');
       this.self = this.paper.circle(position.x, position.y, this.model.get('radius'));
-      this.colorSelf();
-      return this.addListeners();
+      return this.colorSelf();
     };
 
     BacteriumView.prototype.colorSelf = function () {
@@ -72,20 +73,41 @@
       return color;
     };
 
-    BacteriumView.prototype.addListeners = function () {
-      var _this = this;
-      return this.self.click(function () {
-        var position;
-        position = _this.model.get('position');
-        return $("#info").html("buid: " + _this.buid + "<br/>" + "clan: " + _this.clanid + "<br/>" + "x:" + position.x + "<br/>" + "y:" + position.y);
-      });
-    };
-
     BacteriumView.prototype.move = function () {
       var position;
       position = this.model.get('position');
       this.self.attr("cx", position.x);
-      return this.self.attr("cy", position.y);
+      this.self.attr("cy", position.y);
+      if (this.glow) {
+        this.removeGlow();
+        if (this.removeGlowOnNext) {
+          console.log("bam");
+          this.glow = false;
+          return this.removeGlowOnNext = false;
+        } else {
+          return this.addGlow();
+        }
+      }
+    };
+
+    BacteriumView.prototype.removeGlow = function () {
+      if (this.glow) {
+        return this.glow.forEach(function (ellie) {
+          return ellie.remove();
+        });
+      }
+    };
+
+    BacteriumView.prototype.removeGlowPermanently = function () {
+      return this.removeGlowOnNext = true;
+    };
+
+    BacteriumView.prototype.addGlow = function () {
+      return this.glow = this.self.glow();
+    };
+
+    BacteriumView.prototype.addListener = function (callback) {
+      return this.self.click(callback);
     };
 
     return BacteriumView;
@@ -104,7 +126,8 @@
 
     MediumView.prototype.initialize = function () {
       this.render();
-      return this.bacteriumViews = {};
+      this.bacteriumViews = {};
+      return this.glowingBacterium = false;
     };
 
     MediumView.prototype.addMediator = function (mediator) {
@@ -120,16 +143,36 @@
     };
 
     MediumView.prototype.addBacterium = function (bacterium) {
-      var bacteriumView;
+      var bacteriumView, _this = this;
       bacteriumView = new BacteriumView({
         model: bacterium
       });
       this.bacteriumViews["buid" + (bacterium.get('buid'))] = bacteriumView;
-      return bacteriumView.render(this.paper);
+      bacteriumView.render(this.paper);
+      return bacteriumView.addListener(function () {
+        if (_this.glowingBacterium) {
+          _this.glowingBacterium.removeGlowPermanently();
+        }
+        _this.glowingBacterium = bacteriumView;
+        _this.glowingBacterium.addGlow();
+        return _this.showInfo();
+      });
+    };
+
+    MediumView.prototype.showInfo = function () {
+      var position;
+      position = this.glowingBacterium.model.get('position');
+      return $("#info").html("<div>buid:  " + this.glowingBacterium.buid + "</div>            <div>clan:  " + this.glowingBacterium.clanid + "</div>            <div>x: " + position.x + "</div>            <div>y: " + position.y + "</div>");
     };
 
     MediumView.prototype.moveBacterium = function (bacterium) {
       return this.bacteriumViews["buid" + (bacterium.get('buid'))].move();
+    };
+
+    MediumView.prototype.tick = function () {
+      if (this.glowingBacterium) {
+        return this.showInfo();
+      }
     };
 
     return MediumView;

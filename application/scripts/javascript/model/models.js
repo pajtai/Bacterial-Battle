@@ -30,8 +30,11 @@
       this.population = population;
       this.buid = 0;
       this.bacteria = new BacteriumCollection();
-      return this.bacteria.on("add", function (bacterium) {
+      this.bacteria.on("add", function (bacterium) {
         return _this.mediator.bacteriumModelAdded(bacterium);
+      });
+      return this.bacteria.on("change:position", function (bacterium) {
+        return _this.mediator.bacteriumMoved(bacterium);
       });
     };
 
@@ -43,21 +46,18 @@
       var i, _i, _results;
       _results = [];
       for (i = _i = 1; _i <= population; i = _i += 1) {
-        _results.push(this.addBacteria(clanid));
+        _results.push(this.addBacterium(clanid));
       }
       return _results;
     };
 
-    BacteriaModel.prototype.addBacteria = function (clanid) {
-      var bac, c, radius, x, y, _this = this;
+    BacteriaModel.prototype.addBacterium = function (clanid) {
+      var bac, c, radius, x, y;
       c = Config;
       x = _.random(0 + c.BacteriumRadius, c.BoardWidth - c.BacteriumRadius);
       y = _.random(0 + c.BacteriumRadius, c.BoardHeight - c.BacteriumRadius);
       radius = c.BacteriumRadius;
       bac = new BacteriumModel(this.getBuid(), clanid, x, y, radius, clanid);
-      bac.on("change:position", function (bacterium) {
-        return _this.mediator.bacteriumMoved(bacterium);
-      });
       return this.bacteria.add(bac);
     };
 
@@ -68,9 +68,10 @@
     BacteriaModel.prototype.move = function () {
       var _this = this;
       return setInterval(function () {
-        return _this.bacteria.forEach(function (bacterium) {
-          return bacterium.move();
+        _this.bacteria.forEach(function (bacterium) {
+          return bacterium.update();
         });
+        return _this.mediator.tick();
       }, Config.Bacterium.tick);
     };
 
@@ -94,8 +95,18 @@
           'x': x,
           'y': y
         },
-        'radius': radius
+        'radius': radius,
+        'vector': {
+          'angle': false,
+          'length': false
+        },
+        'age': 0
       });
+    };
+
+    BacteriumModel.prototype.update = function () {
+      this.move();
+      return this.age();
     };
 
     BacteriumModel.prototype.move = function () {
@@ -108,6 +119,12 @@
       };
       return this.set({
         'position': newPosition
+      });
+    };
+
+    BacteriumModel.prototype.age = function () {
+      return this.set({
+        'age': this.get('age') + 1
       });
     };
 

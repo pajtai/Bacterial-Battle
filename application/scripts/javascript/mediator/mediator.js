@@ -36,6 +36,10 @@
       return this.medium.moveBacterium(bacterium);
     };
 
+    Mediator.prototype.tick = function () {
+      return this.medium.tick();
+    };
+
     return Mediator;
 
   })(Backbone.Model);

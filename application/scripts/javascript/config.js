@@ -13,7 +13,7 @@
     Stroke: "#adadad",
     Bacterium: {
       maxMovement: 3,
-      tick: 1000 / 60
+      tick: 1000 / 10
     }
   };
 
