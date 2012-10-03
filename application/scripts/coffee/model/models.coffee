@@ -56,26 +56,48 @@ class BacteriumModel extends Backbone.Model
         'y': y
       'radius': radius
       'vector' :
-        'angle' : false
-        'length': false
+        'angle' : Config.Bacterium.notAssigned
+        'magnitude': Config.Bacterium.defaultVectorLength
       'age' : 0
 
   update: ->
     @move()
     @age()
 
+  assignAngle: (vector) ->
+    vector.angle = _.random(0, 360)
+
+  toRadians: (angle) ->
+    angle * (Math.PI / 180);
+
+
   move: ->
     range = Config.Bacterium.maxMovement
 
+    vector = @get('vector')
+
+    if (vector.angle is Config.Bacterium.notAssigned)
+      @assignAngle(vector)
+
+
     position = @get('position')
 
+    dx = Math.cos(@toRadians(vector.angle)) * vector.magnitude
+    dy = Math.sin(@toRadians(vector.angle)) * vector.magnitude
     # TODO: try to reuse existing
     newPosition =
-      'x': position.x + _.random(-1 * range, range)
-      'y': position.y + _.random(-1 * range, range)
+      'x': position.x + dx
+      'y': position.y + dy
+
+    newVector =
+      'angle': vector.angle + _.random(-1 * Config.Bacterium.maxTurnDegrees, Config.Bacterium.maxTurnDegrees)
+      'magnitude': vector.magnitude
 
     @set
       'position': newPosition
+
+    @set
+      'vector': newVector
 
   age: ->
     @set

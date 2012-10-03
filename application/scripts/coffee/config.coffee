@@ -1,7 +1,7 @@
 Config =
   BoardWidth: 500,
   BoardHeight: 500,
-  BacteriumRadius: 10
+  BacteriumRadius: 20
   Colors:
     clanid: {}
     choices: [
@@ -13,7 +13,10 @@ Config =
     used: []
   Stroke: "#adadad"
   Bacterium:
+    notAssigned: "not-assigned"
+    defaultVectorLength: 3
     maxMovement: 3
+    maxTurnDegrees: 45
     tick: 1000 / 10
 
 
@@ -21,3 +24,5 @@ Config =
 # Export globals
 window.BacB = window.BacB or {}
 window.BacB.Config = Config
+
+# TODO: try out: https://github.com/andrewseddon/raphael-zpd

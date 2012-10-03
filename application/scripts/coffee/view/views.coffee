@@ -64,7 +64,7 @@ class BacteriumView extends Backbone.View
     @removeGlowOnNext = true
 
   addGlow: ->
-      @glow = @self.glow()
+      @glow = @self.glow({'color': '#e238a7'})
 
   addListener: (callback) ->
     @self.click(callback)
@@ -106,14 +106,17 @@ class MediumView extends Backbone.View
   showInfo: ->
     # TODO: have mediator handler this
     position = @glowingBacterium.model.get('position')
+    vector = @glowingBacterium.model.get('vector')
     # TODO: update stats per tick
     # use object variables where possible instead of getting from model again, this should be faster
 
     $("#info").html(
       "<div>buid:  #{@glowingBacterium.buid}</div>
             <div>clan:  #{@glowingBacterium.clanid}</div>
-            <div>x: #{position.x}</div>
-            <div>y: #{position.y}</div>
+            <div>x: #{Math.floor(position.x)}</div>
+            <div>y: #{Math.floor(position.y)}</div>
+            <div>direction: #{vector.angle}</div>
+            <div>magnitude: #{vector.magnitude}</div>
             <div>age: #{@glowingBacterium.model.get('age')}</div>"
     )
 

@@ -103,7 +103,9 @@
     };
 
     BacteriumView.prototype.addGlow = function () {
-      return this.glow = this.self.glow();
+      return this.glow = this.self.glow({
+        'color': '#e238a7'
+      });
     };
 
     BacteriumView.prototype.addListener = function (callback) {
@@ -164,9 +166,10 @@
     };
 
     MediumView.prototype.showInfo = function () {
-      var position;
+      var position, vector;
       position = this.glowingBacterium.model.get('position');
-      return $("#info").html("<div>buid:  " + this.glowingBacterium.buid + "</div>            <div>clan:  " + this.glowingBacterium.clanid + "</div>            <div>x: " + position.x + "</div>            <div>y: " + position.y + "</div>            <div>age: " + (this.glowingBacterium.model.get('age')) + "</div>");
+      vector = this.glowingBacterium.model.get('vector');
+      return $("#info").html("<div>buid:  " + this.glowingBacterium.buid + "</div>            <div>clan:  " + this.glowingBacterium.clanid + "</div>            <div>x: " + (Math.floor(position.x)) + "</div>            <div>y: " + (Math.floor(position.y)) + "</div>            <div>direction: " + vector.angle + "</div>            <div>magnitude: " + vector.magnitude + "</div>            <div>age: " + (this.glowingBacterium.model.get('age')) + "</div>");
     };
 
     MediumView.prototype.moveBacterium = function (bacterium) {

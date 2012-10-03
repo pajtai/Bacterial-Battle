@@ -97,8 +97,8 @@
         },
         'radius': radius,
         'vector': {
-          'angle': false,
-          'length': false
+          'angle': Config.Bacterium.notAssigned,
+          'magnitude': Config.Bacterium.defaultVectorLength
         },
         'age': 0
       });
@@ -109,16 +109,37 @@
       return this.age();
     };
 
+    BacteriumModel.prototype.assignAngle = function (vector) {
+      return vector.angle = _.random(0, 360);
+    };
+
+    BacteriumModel.prototype.toRadians = function (angle) {
+      return angle * (Math.PI / 180);
+    };
+
     BacteriumModel.prototype.move = function () {
-      var newPosition, position, range;
+      var dx, dy, newPosition, newVector, position, range, vector;
       range = Config.Bacterium.maxMovement;
+      vector = this.get('vector');
+      if (vector.angle === Config.Bacterium.notAssigned) {
+        this.assignAngle(vector);
+      }
       position = this.get('position');
+      dx = Math.cos(this.toRadians(vector.angle)) * vector.magnitude;
+      dy = Math.sin(this.toRadians(vector.angle)) * vector.magnitude;
       newPosition = {
-        'x': position.x + _.random(-1 * range, range),
-        'y': position.y + _.random(-1 * range, range)
+        'x': position.x + dx,
+        'y': position.y + dy
       };
-      return this.set({
+      newVector = {
+        'angle': vector.angle + _.random(-1 * Config.Bacterium.maxTurnDegrees, Config.Bacterium.maxTurnDegrees),
+        'magnitude': vector.magnitude
+      };
+      this.set({
         'position': newPosition
+      });
+      return this.set({
+        'vector': newVector
       });
     };
 
