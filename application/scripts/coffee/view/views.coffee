@@ -113,7 +113,8 @@ class MediumView extends Backbone.View
       "<div>buid:  #{@glowingBacterium.buid}</div>
             <div>clan:  #{@glowingBacterium.clanid}</div>
             <div>x: #{position.x}</div>
-            <div>y: #{position.y}</div>"
+            <div>y: #{position.y}</div>
+            <div>age: #{@glowingBacterium.model.get('age')}</div>"
     )
 
   moveBacterium: (bacterium) ->

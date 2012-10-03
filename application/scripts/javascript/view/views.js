@@ -166,7 +166,7 @@
     MediumView.prototype.showInfo = function () {
       var position;
       position = this.glowingBacterium.model.get('position');
-      return $("#info").html("<div>buid:  " + this.glowingBacterium.buid + "</div>            <div>clan:  " + this.glowingBacterium.clanid + "</div>            <div>x: " + position.x + "</div>            <div>y: " + position.y + "</div>");
+      return $("#info").html("<div>buid:  " + this.glowingBacterium.buid + "</div>            <div>clan:  " + this.glowingBacterium.clanid + "</div>            <div>x: " + position.x + "</div>            <div>y: " + position.y + "</div>            <div>age: " + (this.glowingBacterium.model.get('age')) + "</div>");
     };
 
     MediumView.prototype.moveBacterium = function (bacterium) {
