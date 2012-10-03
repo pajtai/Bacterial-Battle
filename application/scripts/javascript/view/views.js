@@ -153,9 +153,13 @@
         if (_this.glowingBacterium) {
           _this.glowingBacterium.removeGlowPermanently();
         }
-        _this.glowingBacterium = bacteriumView;
-        _this.glowingBacterium.addGlow();
-        return _this.showInfo();
+        if (_this.glowingBacterium === bacteriumView) {
+          return _this.glowingBacterium = false;
+        } else {
+          _this.glowingBacterium = bacteriumView;
+          _this.glowingBacterium.addGlow();
+          return _this.showInfo();
+        }
       });
     };
 

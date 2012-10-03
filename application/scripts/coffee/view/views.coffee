@@ -96,9 +96,12 @@ class MediumView extends Backbone.View
     bacteriumView.addListener =>
       if @glowingBacterium
         @glowingBacterium.removeGlowPermanently()
-      @glowingBacterium = bacteriumView
-      @glowingBacterium.addGlow()
-      @showInfo()
+      if @glowingBacterium is bacteriumView
+        @glowingBacterium = false
+      else
+        @glowingBacterium = bacteriumView
+        @glowingBacterium.addGlow()
+        @showInfo()
 
   showInfo: ->
     # TODO: have mediator handler this
