@@ -4,11 +4,13 @@ module.exports = function(grunt) {
 
         dirs: {
             dev: 'application',
-            live: 'build'
+            live: 'targets/live'
         },
 
         files: {
 
+            scripts:    '/scripts',
+            vendor:     'scripts/vendor',
             coffee:     '/scripts/coffee',
             javascript: '/scripts/javascript',
 
@@ -55,6 +57,27 @@ module.exports = function(grunt) {
                     src: project.dirs.dev,
                     dest: project.dirs.live
                 }
+            },
+
+            min: {
+                live: {
+                    src: [
+                        project.dirs.live + project.files.vendor + '/jquery.1.8.2.js',
+                        project.dirs.live + project.files.vendor + '/raphael.2.1.0.js',
+                        project.dirs.live + project.files.vendor + '/lodash.0.7.0.js',
+                        project.dirs.live + project.files.vendor + '/backbone.0.9.2.js',
+                        project.dirs.live + project.files.javascript + '/config.js',
+                        project.dirs.live + project.files.javascript + '/mediator/mediator.js',
+                        project.dirs.live + project.files.javascript + '/model/models.js',
+                        project.dirs.live + project.files.javascript + '/view/views.js',
+                        project.dirs.live + project.files.javascript + '/main.js'
+                    ],
+                    dest: project.dirs.live + project.files.scripts + '/bacterial-battle.js'
+                }
+            },
+
+            usemin: {
+                html: [project.dirs.live + '/**/*.html']
             },
 
             // No need to install any plugins
@@ -108,7 +131,7 @@ module.exports = function(grunt) {
 
     // The main tasks.
     grunt.registerTask('developer', 'clean coffee beautify');
-    grunt.registerTask('live', 'clean coffee cp:live usemin clean:live');
+    grunt.registerTask('live', 'clean:developer coffee cp:live usemin min clean:live');
 
     grunt.registerTask('reloadServer', 'server reload watch');
 }
