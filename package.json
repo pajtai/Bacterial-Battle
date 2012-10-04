@@ -22,7 +22,7 @@
         }
     ],
     "dependencies": {
-        // This has not beedn updated, check back "grunt-clean": ">=0.3.0",
+        "grunt-clean": ">=0.3.0",
         "grunt-coffee": ">=0.0.6",
         "grunt-cp": ">=0.1.0",
         "grunt-reload":">=0.2.0",

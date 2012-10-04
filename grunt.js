@@ -31,7 +31,7 @@ module.exports = function(grunt) {
             // Remove all junk from compiled only directories
             clean: {
                 developer: project.dirs.dev   + project.files.javascript,
-                live:      project.dirs.live  + project.files.coffee
+                live:      project.dirs.live  + project.files.coffee + '/'
             },
 
             coffee: {
@@ -131,7 +131,7 @@ module.exports = function(grunt) {
 
     // The main tasks.
     grunt.registerTask('developer', 'clean coffee beautify');
-    grunt.registerTask('live', 'clean:developer coffee cp:live min usemin');
+    grunt.registerTask('live', 'clean:developer coffee cp:live min usemin clean:live');
 
     grunt.registerTask('reloadServer', 'server reload watch');
 }
