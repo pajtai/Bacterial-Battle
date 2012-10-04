@@ -10,7 +10,7 @@ module.exports = function(grunt) {
         files: {
 
             scripts:    '/scripts',
-            vendor:     'scripts/vendor',
+            vendor:     '/scripts/vendor',
             coffee:     '/scripts/coffee',
             javascript: '/scripts/javascript',
 
