@@ -9,6 +9,7 @@ module.exports = function(grunt) {
 
         files: {
 
+            script:     '/script',
             scripts:    '/scripts',
             vendor:     '/scripts/vendor',
             coffee:     '/scripts/coffee',
@@ -31,7 +32,7 @@ module.exports = function(grunt) {
             // Remove all junk from compiled only directories
             clean: {
                 developer: project.dirs.dev   + project.files.javascript,
-                live:      project.dirs.live  + project.files.coffee + '/'
+                live:      project.dirs.live  + project.files.scripts
             },
 
             coffee: {
@@ -72,7 +73,8 @@ module.exports = function(grunt) {
                         project.dirs.live + project.files.javascript + '/view/views.js',
                         project.dirs.live + project.files.javascript + '/main.js'
                     ],
-                    dest: project.dirs.live + project.files.scripts + '/bacterial-battle.js'
+                    dest: project.dirs.live + project.files.script + '/bacterial-battle.js',
+                    separator: ';'
                 }
             },
 
