@@ -131,7 +131,7 @@ module.exports = function(grunt) {
 
     // The main tasks.
     grunt.registerTask('developer', 'clean coffee beautify');
-    grunt.registerTask('live', 'clean:developer coffee cp:live usemin min clean:live');
+    grunt.registerTask('live', 'clean:developer coffee cp:live min usemin');
 
     grunt.registerTask('reloadServer', 'server reload watch');
 }
