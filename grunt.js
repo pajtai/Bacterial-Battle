@@ -2,16 +2,18 @@ module.exports = function(grunt) {
 
     // global instally docco and pygments
     // TODO: must be better way
-
+    var commonTasks;
     var project = {
 
         dirs: {
+            docs: 'docs',
             dev: 'application',
             live: 'targets/live'
         },
 
         files: {
 
+            docs:       '/docs',
             script:     '/script',
             scripts:    '/scripts',
             vendor:     '/scripts/vendor',
@@ -34,8 +36,9 @@ module.exports = function(grunt) {
 
             // Remove all junk from compiled only directories
             clean: {
-                docs: 'docs',
+                docs: project.dirs.doc,
                 developer: project.dirs.dev   + project.files.javascript,
+                appDocs: project.dirs.dev + project.files.docs,
                 live:      project.dirs.live  + project.files.scripts
             },
 
@@ -61,6 +64,10 @@ module.exports = function(grunt) {
                 live: {
                     src: project.dirs.dev,
                     dest: project.dirs.live
+                },
+                docs: {
+                    src: project.dirs.docs,
+                    dest: project.dirs.docs + project.files.docs
                 }
             },
 
@@ -141,8 +148,9 @@ module.exports = function(grunt) {
     grunt.loadTasks('./tasks/');
 
     // The main tasks.
-    grunt.registerTask('developer', 'clean:developer coffee beautify');
-    grunt.registerTask('live', 'clean:developer clean:docs docco coffee cp:live min usemin clean:live');
+    commonTasks = 'clean:developer clean:appDocs clean:docs docco cp:docs coffee ';
+    grunt.registerTask('developer', commonTasks + 'beautify');
+    grunt.registerTask('live',      commonTasks + 'cp:live min usemin clean:live');
 
     grunt.registerTask('reloadServer', 'server reload watch');
-}
+};
