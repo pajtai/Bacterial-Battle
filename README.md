@@ -1,7 +1,7 @@
 Bacterial-Battle
 ================
 
-Work in progress - game
+A game where bacteria battle to survive and evolve
 
 To install nodejs dependencies:
 
