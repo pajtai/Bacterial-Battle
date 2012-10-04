@@ -1,6 +1,8 @@
 BacB = window.BacB
 Config = BacB.Config
 
+# This is the model of all bacteria
+# It tracks changes in the entire population and controls population wide events
 class BacteriaModel extends Backbone.Model
 
   initialize: (@population) ->
@@ -42,9 +44,9 @@ class BacteriaModel extends Backbone.Model
       @mediator.tick()
     , Config.Bacterium.tick
 
-
-
-
+# This is a model of an individual bacterium
+# It doesn't know or care who is watching / listening to it
+# It is modular and does it's thing
 class BacteriumModel extends Backbone.Model
 
   initialize: (buid, clanid, x, y, radius) ->
@@ -74,6 +76,10 @@ class BacteriumModel extends Backbone.Model
   move: ->
     range = Config.Bacterium.maxMovement
 
+    # Using vectors for bacterial motion. Randomly changing just x, y positions results in "Brownian motion"
+    # Using a vector and slowly changing it give the bacter "momentum"
+    # Bacterium doesn't know this, but view are getting changes in x, y bubbled up and are unaware that
+    # a vector is involed. This made it easy to initially add in vectors vs pure x,y
     vector = @get('vector')
 
     if (vector.angle is Config.Bacterium.notAssigned)
@@ -84,7 +90,7 @@ class BacteriumModel extends Backbone.Model
 
     dx = Math.cos(@toRadians(vector.angle)) * vector.magnitude
     dy = Math.sin(@toRadians(vector.angle)) * vector.magnitude
-    # TODO: try to reuse existing
+
     newPosition =
       'x': position.x + dx
       'y': position.y + dy
@@ -103,9 +109,15 @@ class BacteriumModel extends Backbone.Model
     @set
       'age' : @get('age') + 1
 
-
+# This is a collection of individual bacteria
+# Backbone provides some useful functionality with collections, making it easy to track changes on any model
+# in a collection, to track addition and deletion of models, etc
 class BacteriumCollection extends Backbone.Collection
 
   model: BacteriumModel
 
+# We export the population model
+# There is no need for anyone else to know about the individual bacteria
+# This keeps things clean and allows future changes to the models without having to worry about
+# affecting View functionality
 window.BacB.BacteriaModal = BacteriaModel

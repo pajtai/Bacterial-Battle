@@ -102,11 +102,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-clean');
     grunt.loadNpmTasks('grunt-cp');
     grunt.loadNpmTasks('grunt-reload');
-    grunt.loadNpmTasks('grunt-beautify')
+    grunt.loadNpmTasks('grunt-beautify');
+
+    grunt.loadTasks('./tasks/');
 
     // The main tasks.
     grunt.registerTask('developer', 'clean coffee beautify');
-    grunt.registerTask('live', 'clean coffee sass cp:live clean:live');
+    grunt.registerTask('live', 'clean coffee cp:live usemin clean:live');
 
     grunt.registerTask('reloadServer', 'server reload watch');
 }

@@ -6,6 +6,9 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
+ *
+ * Modified with: http://colorschemedesigner.com/#2D21Tp9oo..Gr
+ *
  */
 .clearfix {
   *zoom: 1;
@@ -146,11 +149,11 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 20px;
-  color: #ffffff;
-  background-color: #b7f46e;
+  color: #BAE49E; /*#BAE49E; /*#EBBBA3;*/
+  background-color: #BAE49E;
 }
 a {
-  color: #0088cc;
+  color: #510748;
   text-decoration: none;
 }
 a:hover {
@@ -526,6 +529,7 @@ h6 {
   font-weight: bold;
   line-height: 1;
   color: inherit;
+  text-shadow: 2px 2px 4px #000;
   text-rendering: optimizelegibility;
 }
 h1 small,
@@ -4187,8 +4191,8 @@ a.thumbnail:hover {
   min-height: 20px;
   padding: 19px;
   margin-bottom: 20px;
-  background-color: #73ae2c;
-  border: 1px solid #539700;
+  background-color: #507A35;
+  border: 1px solid #2E6609;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;

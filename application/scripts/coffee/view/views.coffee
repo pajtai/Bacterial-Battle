@@ -1,5 +1,8 @@
 Config = window.BacB.Config
 
+# The view for an individual bacterium
+# This is a slight deviation from backbone, since this view isn't really a DOM element. It is a
+# a graphic which has a DOM element attached to it
 class BacteriumView extends Backbone.View
 
   # Each bacterium view is initialized with its corresponding models,
@@ -10,16 +13,19 @@ class BacteriumView extends Backbone.View
     @glow = false
     @removeGlowOnNext = false
 
+  # Initially creating of bacterium with Raphael's help
   render: (@paper) ->
     position = @model.get('position')
     @self = @paper.circle(position.x, position.y, @model.get('radius'))
     @colorSelf()
 
+  # Color bacterium based on the clan it is in
   colorSelf: ->
     color = @getColor()
     @self.attr("fill", color)
     @self.attr("stroke", Config.Stroke);
 
+  # Choose a random color for the clan if it hasn't already been picked
   getColor: ->
 
     color = Config.Colors.clanid[@clanid]
@@ -40,12 +46,14 @@ class BacteriumView extends Backbone.View
 
     color
 
+  # Move the bacterium. No real logic here, just check the state of the model.
   move: ->
     position = @model.get('position')
 
     @self.attr("cx", position.x)
     @self.attr("cy", position.y)
 
+    # If the bacterium is glowing, preserve the glow by moving it with the bacterium's movement
     if @glow
       @removeGlow()
       if @removeGlowOnNext
@@ -55,14 +63,17 @@ class BacteriumView extends Backbone.View
       else
         @addGlow()
 
+  # This will remove the glow, but the glow will be redrawn on the next movement
   removeGlow: ->
     if @glow
       @glow.forEach (ellie) ->
         ellie.remove()
 
+  # Glow will be removed on next movement
   removeGlowPermanently: ->
     @removeGlowOnNext = true
 
+  # TODO: move glow colors into config
   addGlow: ->
       @glow = @self.glow({'color': '#e238a7'})
 

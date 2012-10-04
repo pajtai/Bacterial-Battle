@@ -1,5 +1,5 @@
 Config =
-  BoardWidth: 500,
+  BoardWidth: 1130,
   BoardHeight: 500,
   BacteriumRadius: 20
   Colors:
