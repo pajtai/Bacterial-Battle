@@ -1,5 +1,8 @@
 module.exports = function(grunt) {
 
+    // global instally docco and pygments
+    // TODO: must be better way
+
     var project = {
 
         dirs: {
@@ -31,6 +34,7 @@ module.exports = function(grunt) {
 
             // Remove all junk from compiled only directories
             clean: {
+                docs: 'docs',
                 developer: project.dirs.dev   + project.files.javascript,
                 live:      project.dirs.live  + project.files.scripts
             },
@@ -76,6 +80,10 @@ module.exports = function(grunt) {
                     dest: project.dirs.live + project.files.script + '/bacterial-battle.js',
                     separator: ';'
                 }
+            },
+
+            docco: {
+                coffee: project.dirs.dev + project.files.coffee + '/**/*.coffee'
             },
 
             usemin: {
@@ -128,12 +136,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-cp');
     grunt.loadNpmTasks('grunt-reload');
     grunt.loadNpmTasks('grunt-beautify');
+    grunt.loadNpmTasks('grunt-docco');
 
     grunt.loadTasks('./tasks/');
 
     // The main tasks.
-    grunt.registerTask('developer', 'clean coffee beautify');
-    grunt.registerTask('live', 'clean:developer coffee cp:live min usemin clean:live');
+    grunt.registerTask('developer', 'clean:developer coffee beautify');
+    grunt.registerTask('live', 'clean:developer clean:docs docco coffee cp:live min usemin clean:live');
 
     grunt.registerTask('reloadServer', 'server reload watch');
 }
