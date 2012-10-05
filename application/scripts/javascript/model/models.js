@@ -1,23 +1,13 @@
-(function () {
-  var BacB, BacteriaModel, BacteriumCollection, BacteriumModel, Config, __hasProp = {}.hasOwnProperty,
-      __extends = function (child, parent) {
-      for (var key in parent) {
-        if (__hasProp.call(parent, key)) child[key] = parent[key];
-      }
-      function ctor() {
-        this.constructor = child;
-      }
-      ctor.prototype = parent.prototype;
-      child.prototype = new ctor();
-      child.__super__ = parent.prototype;
-      return child;
-      };
+(function() {
+  var BacB, BacteriaModel, BacteriumCollection, BacteriumModel, Config,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   BacB = window.BacB;
 
   Config = BacB.Config;
 
-  BacteriaModel = (function (_super) {
+  BacteriaModel = (function(_super) {
 
     __extends(BacteriaModel, _super);
 
@@ -25,24 +15,24 @@
       return BacteriaModel.__super__.constructor.apply(this, arguments);
     }
 
-    BacteriaModel.prototype.initialize = function (population) {
+    BacteriaModel.prototype.initialize = function(population) {
       var _this = this;
       this.population = population;
       this.buid = 0;
       this.bacteria = new BacteriumCollection();
-      this.bacteria.on("add", function (bacterium) {
+      this.bacteria.on("add", function(bacterium) {
         return _this.mediator.bacteriumModelAdded(bacterium);
       });
-      return this.bacteria.on("change:position", function (bacterium) {
+      return this.bacteria.on("change:position", function(bacterium) {
         return _this.mediator.bacteriumMoved(bacterium);
       });
     };
 
-    BacteriaModel.prototype.addMediator = function (mediator) {
+    BacteriaModel.prototype.addMediator = function(mediator) {
       this.mediator = mediator;
     };
 
-    BacteriaModel.prototype.addPopulation = function (population, clanid) {
+    BacteriaModel.prototype.addPopulation = function(population, clanid) {
       var i, _i, _results;
       _results = [];
       for (i = _i = 1; _i <= population; i = _i += 1) {
@@ -51,7 +41,7 @@
       return _results;
     };
 
-    BacteriaModel.prototype.addBacterium = function (clanid) {
+    BacteriaModel.prototype.addBacterium = function(clanid) {
       var bac, c, radius, x, y;
       c = Config;
       x = _.random(0 + c.BacteriumRadius, c.BoardWidth - c.BacteriumRadius);
@@ -61,14 +51,14 @@
       return this.bacteria.add(bac);
     };
 
-    BacteriaModel.prototype.getBuid = function () {
+    BacteriaModel.prototype.getBuid = function() {
       return ++this.buid;
     };
 
-    BacteriaModel.prototype.move = function () {
+    BacteriaModel.prototype.move = function() {
       var _this = this;
-      return setInterval(function () {
-        _this.bacteria.forEach(function (bacterium) {
+      return setInterval(function() {
+        _this.bacteria.forEach(function(bacterium) {
           return bacterium.update();
         });
         return _this.mediator.tick();
@@ -79,7 +69,7 @@
 
   })(Backbone.Model);
 
-  BacteriumModel = (function (_super) {
+  BacteriumModel = (function(_super) {
 
     __extends(BacteriumModel, _super);
 
@@ -87,7 +77,7 @@
       return BacteriumModel.__super__.constructor.apply(this, arguments);
     }
 
-    BacteriumModel.prototype.initialize = function (buid, clanid, x, y, radius) {
+    BacteriumModel.prototype.initialize = function(buid, clanid, x, y, radius) {
       return this.set({
         'buid': buid,
         'clanid': clanid,
@@ -104,20 +94,20 @@
       });
     };
 
-    BacteriumModel.prototype.update = function () {
+    BacteriumModel.prototype.update = function() {
       this.move();
       return this.age();
     };
 
-    BacteriumModel.prototype.assignAngle = function (vector) {
+    BacteriumModel.prototype.assignAngle = function(vector) {
       return vector.angle = _.random(0, 360);
     };
 
-    BacteriumModel.prototype.toRadians = function (angle) {
+    BacteriumModel.prototype.toRadians = function(angle) {
       return angle * (Math.PI / 180);
     };
 
-    BacteriumModel.prototype.move = function () {
+    BacteriumModel.prototype.move = function() {
       var dx, dy, newPosition, newVector, position, range, vector;
       range = Config.Bacterium.maxMovement;
       vector = this.get('vector');
@@ -143,7 +133,7 @@
       });
     };
 
-    BacteriumModel.prototype.age = function () {
+    BacteriumModel.prototype.age = function() {
       return this.set({
         'age': this.get('age') + 1
       });
@@ -153,7 +143,7 @@
 
   })(Backbone.Model);
 
-  BacteriumCollection = (function (_super) {
+  BacteriumCollection = (function(_super) {
 
     __extends(BacteriumCollection, _super);
 

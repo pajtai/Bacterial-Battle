@@ -1,0 +1,24 @@
+<!DOCTYPE html>  <html> <head>   <title>mediator.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="config.html">                 config.coffee               </a>                                           <a class="source" href="main.html">                 main.coffee               </a>                                           <a class="source" href="mediator.html">                 mediator.coffee               </a>                                           <a class="source" href="models.html">                 models.coffee               </a>                                           <a class="source" href="views.html">                 views.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               mediator.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nv">BacB = </span><span class="nb">window</span><span class="p">.</span><span class="nx">BacB</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Currently the mediator is just a proxy... it doesn't really do anything
+But having a mediator allows us the option of having a little more control over how to handle model changes
+or view updates
+A common problem with pub sub variations is that it is easy to get into a situation where the order of published
+events is important, but bugs are caused by the variability of that order. A mediator can often help out with this
+It also helps decouple the model and views (even though some models are passed in to the views)
+This makes testing much easier.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">Mediator</span> <span class="k">extends</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Model</span>
+
+  <span class="nv">initialize: </span><span class="nf">(@medium, @bacteria) -&gt;</span>
+
+  <span class="nv">bacteriumModelAdded: </span><span class="nf">(bacterium) -&gt;</span>
+    <span class="nx">@medium</span><span class="p">.</span><span class="nx">addBacterium</span><span class="p">(</span><span class="nx">bacterium</span><span class="p">)</span>
+
+  <span class="nv">bacteriumMoved: </span><span class="nf">(bacterium) -&gt;</span>
+    <span class="nx">@medium</span><span class="p">.</span><span class="nx">moveBacterium</span><span class="p">(</span><span class="nx">bacterium</span><span class="p">)</span>
+
+  <span class="nv">tick: </span><span class="o">-&gt;</span>
+    <span class="nx">@medium</span><span class="p">.</span><span class="nx">tick</span><span class="p">()</span>
+
+
+
+<span class="nb">window</span><span class="p">.</span><span class="nv">BacB.Mediator = </span><span class="nx">Mediator</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

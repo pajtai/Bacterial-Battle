@@ -1,28 +1,12 @@
-(function () {
-  var BacteriumView, Config, MediumView, __hasProp = {}.hasOwnProperty,
-      __extends = function (child, parent) {
-      for (var key in parent) {
-        if (__hasProp.call(parent, key)) child[key] = parent[key];
-      }
-      function ctor() {
-        this.constructor = child;
-      }
-      ctor.prototype = parent.prototype;
-      child.prototype = new ctor();
-      child.__super__ = parent.prototype;
-      return child;
-      },
-      __indexOf = [].indexOf ||
-      function (item) {
-      for (var i = 0, l = this.length; i < l; i++) {
-        if (i in this && this[i] === item) return i;
-      }
-      return -1;
-      };
+(function() {
+  var BacteriumView, Config, MediumView,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   Config = window.BacB.Config;
 
-  BacteriumView = (function (_super) {
+  BacteriumView = (function(_super) {
 
     __extends(BacteriumView, _super);
 
@@ -30,14 +14,14 @@
       return BacteriumView.__super__.constructor.apply(this, arguments);
     }
 
-    BacteriumView.prototype.initialize = function () {
+    BacteriumView.prototype.initialize = function() {
       this.buid = this.model.get('buid');
       this.clanid = this.model.get('clanid');
       this.glow = false;
       return this.removeGlowOnNext = false;
     };
 
-    BacteriumView.prototype.render = function (paper) {
+    BacteriumView.prototype.render = function(paper) {
       var position;
       this.paper = paper;
       position = this.model.get('position');
@@ -45,14 +29,14 @@
       return this.colorSelf();
     };
 
-    BacteriumView.prototype.colorSelf = function () {
+    BacteriumView.prototype.colorSelf = function() {
       var color;
       color = this.getColor();
       this.self.attr("fill", color);
       return this.self.attr("stroke", Config.Stroke);
     };
 
-    BacteriumView.prototype.getColor = function () {
+    BacteriumView.prototype.getColor = function() {
       var color, index;
       color = Config.Colors.clanid[this.clanid];
       if (!color) {
@@ -73,7 +57,7 @@
       return color;
     };
 
-    BacteriumView.prototype.move = function () {
+    BacteriumView.prototype.move = function() {
       var position;
       position = this.model.get('position');
       this.self.attr("cx", position.x);
@@ -90,25 +74,25 @@
       }
     };
 
-    BacteriumView.prototype.removeGlow = function () {
+    BacteriumView.prototype.removeGlow = function() {
       if (this.glow) {
-        return this.glow.forEach(function (ellie) {
+        return this.glow.forEach(function(ellie) {
           return ellie.remove();
         });
       }
     };
 
-    BacteriumView.prototype.removeGlowPermanently = function () {
+    BacteriumView.prototype.removeGlowPermanently = function() {
       return this.removeGlowOnNext = true;
     };
 
-    BacteriumView.prototype.addGlow = function () {
+    BacteriumView.prototype.addGlow = function() {
       return this.glow = this.self.glow({
         'color': '#e238a7'
       });
     };
 
-    BacteriumView.prototype.addListener = function (callback) {
+    BacteriumView.prototype.addListener = function(callback) {
       return this.self.click(callback);
     };
 
@@ -116,7 +100,7 @@
 
   })(Backbone.View);
 
-  MediumView = (function (_super) {
+  MediumView = (function(_super) {
 
     __extends(MediumView, _super);
 
@@ -126,32 +110,33 @@
 
     MediumView.prototype.el = $("#medium");
 
-    MediumView.prototype.initialize = function () {
+    MediumView.prototype.initialize = function() {
       this.render();
       this.bacteriumViews = {};
       return this.glowingBacterium = false;
     };
 
-    MediumView.prototype.addMediator = function (mediator) {
+    MediumView.prototype.addMediator = function(mediator) {
       this.mediator = mediator;
     };
 
-    MediumView.prototype.render = function () {
+    MediumView.prototype.render = function() {
       return this.paper = Raphael(this.el, Config.BoardWidth, Config.BoardHeight);
     };
 
-    MediumView.prototype.raphael = function () {
+    MediumView.prototype.raphael = function() {
       return this.paper;
     };
 
-    MediumView.prototype.addBacterium = function (bacterium) {
-      var bacteriumView, _this = this;
+    MediumView.prototype.addBacterium = function(bacterium) {
+      var bacteriumView,
+        _this = this;
       bacteriumView = new BacteriumView({
         model: bacterium
       });
       this.bacteriumViews["buid" + (bacterium.get('buid'))] = bacteriumView;
       bacteriumView.render(this.paper);
-      return bacteriumView.addListener(function () {
+      return bacteriumView.addListener(function() {
         if (_this.glowingBacterium) {
           _this.glowingBacterium.removeGlowPermanently();
         }
@@ -165,18 +150,18 @@
       });
     };
 
-    MediumView.prototype.showInfo = function () {
+    MediumView.prototype.showInfo = function() {
       var position, vector;
       position = this.glowingBacterium.model.get('position');
       vector = this.glowingBacterium.model.get('vector');
       return $("#info").html("<div>buid:  " + this.glowingBacterium.buid + "</div>            <div>clan:  " + this.glowingBacterium.clanid + "</div>            <div>x: " + (Math.floor(position.x)) + "</div>            <div>y: " + (Math.floor(position.y)) + "</div>            <div>direction: " + vector.angle + "</div>            <div>magnitude: " + vector.magnitude + "</div>            <div>age: " + (this.glowingBacterium.model.get('age')) + "</div>");
     };
 
-    MediumView.prototype.moveBacterium = function (bacterium) {
+    MediumView.prototype.moveBacterium = function(bacterium) {
       return this.bacteriumViews["buid" + (bacterium.get('buid'))].move();
     };
 
-    MediumView.prototype.tick = function () {
+    MediumView.prototype.tick = function() {
       if (this.glowingBacterium) {
         return this.showInfo();
       }
