@@ -36,9 +36,9 @@ module.exports = function(grunt) {
 
             // Remove all junk from compiled only directories
             clean: {
-                docs: project.dirs.doc,
                 developer: project.dirs.dev   + project.files.javascript,
                 appDocs: project.dirs.dev + project.files.docs,
+                docs: project.dirs.docs,
                 live:      project.dirs.live  + project.files.scripts
             },
 
@@ -67,7 +67,7 @@ module.exports = function(grunt) {
                 },
                 docs: {
                     src: project.dirs.docs,
-                    dest: project.dirs.docs + project.files.docs
+                    dest: project.dirs.dev + project.files.docs
                 }
             },
 
