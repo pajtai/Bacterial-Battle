@@ -52,31 +52,32 @@
     };
 
     BacteriaModel.prototype.addBacterium = function (clanid) {
-      var bac, c, maxRadius, minRadius, radius, x, y;
+      var bac, c, maxRadius, minRadius, position, radius;
       c = Config;
       minRadius = c.Bacterium.radius.min;
       maxRadius = c.Bacterium.radius.max;
       while (true) {
         radius = _.random(minRadius, maxRadius);
-        x = _.random(0 + radius, c.BoardWidth - radius);
-        y = _.random(0 + radius, c.BoardHeight - radius);
-        if (this.noCollision(x, y, radius)) {
+        position = {};
+        position.x = _.random(0 + radius, c.BoardWidth - radius);
+        position.y = _.random(0 + radius, c.BoardHeight - radius);
+        if (this.noCollision(position, radius)) {
           break;
         }
       }
-      bac = new BacteriumModel(this.getBuid(), clanid, x, y, radius, this);
+      bac = new BacteriumModel(this.getBuid(), clanid, position, radius, this);
       return this.bacteria.add(bac);
     };
 
-    BacteriaModel.prototype.noCollision = function (x, y, radius, thisBacterium) {
+    BacteriaModel.prototype.noCollision = function (position, radius, thisBacterium) {
       var collision, _this = this;
       if (thisBacterium == null) {
         thisBacterium = false;
       }
       collision = false;
       this.bacteria.forEach(function (bacterium) {
-        if (!thisBacterium || (bacterium === !thisBacterium)) {
-          if (bacterium.collidesWith(x, y, radius)) {
+        if ((thisBacterium === false) || (bacterium === !thisBacterium)) {
+          if (bacterium.collidesWith(position, radius)) {
             return collision = true;
           }
         }
@@ -84,11 +85,44 @@
       return !collision;
     };
 
-    BacteriaModel.prototype.bumpsSomething = function (thisBacterium, x, y) {
-      var position, radius;
-      radius = thisBacterium.get('radius');
-      position = thisBacterium.get('position');
-      return !this.noCollision(position.x, position.y, radius, thisBacterium);
+    BacteriaModel.prototype.bumpsSomething = function (thisBacterium, newPosition) {
+      var bumpsWall, collision, info, radius;
+      collision = false;
+      info = {};
+      bumpsWall = this.bumpsWall(thisBacterium);
+      if (false === bumpsWall) {
+        radius = thisBacterium.get('radius');
+        collision = !this.noCollision(newPosition, radius, thisBacterium);
+      } else {
+        collision = true;
+        info.obstacle = 'wall';
+        info.direction = bumpsWall;
+      }
+      if (!collision) {
+        return false;
+      } else {
+        return info;
+      }
+    };
+
+    BacteriaModel.prototype.bumpsWall = function (bacterium) {
+      var bump, position, radius;
+      bump = false;
+      position = bacterium.get('position');
+      radius = bacterium.get('radius');
+      if (position.x - radius < 0) {
+        bump = 'left';
+      }
+      if (position.y - radius < 0) {
+        bump = 'top';
+      }
+      if (position.x + radius > Config.BoardWidth) {
+        bump = 'right';
+      }
+      if (position.y + radius > Config.BoardHeight) {
+        bump = 'bottom';
+      }
+      return bump;
     };
 
     BacteriaModel.prototype.getBuid = function () {
@@ -117,14 +151,14 @@
       return BacteriumModel.__super__.constructor.apply(this, arguments);
     }
 
-    BacteriumModel.prototype.initialize = function (buid, clanid, x, y, radius, outsideWorld) {
+    BacteriumModel.prototype.initialize = function (buid, clanid, position, radius, outsideWorld) {
       this.outsideWorld = outsideWorld;
       return this.set({
         'buid': buid,
         'clanid': clanid,
         'position': {
-          'x': x,
-          'y': y
+          'x': position.x,
+          'y': position.y
         },
         'radius': radius,
         'vector': {
@@ -149,7 +183,7 @@
     };
 
     BacteriumModel.prototype.move = function () {
-      var dx, dy, newPosition, newVector, position, range, vector;
+      var collision, dx, dy, info, newPosition, newVector, position, range, vector;
       range = Config.Bacterium.maxMovement;
       vector = this.get('vector');
       if (vector.angle === Config.Bacterium.notAssigned) {
@@ -166,16 +200,37 @@
         'angle': vector.angle + _.random(-1 * Config.Bacterium.maxTurnDegrees, Config.Bacterium.maxTurnDegrees),
         'magnitude': vector.magnitude
       };
-      if (this.outsideWorld.bumpsSomething(this, newPosition.x, newPosition.y)) {
-        return console.log("collision");
+      collision = this.outsideWorld.bumpsSomething(this, newPosition);
+      if (false === collision) {
+
       } else {
-        this.set({
-          'position': newPosition
-        });
-        return this.set({
-          'vector': newVector
-        });
+        info = collision;
+        if ('wall' === info.obstacle) {
+          switch (info.direction) {
+          case 'top':
+            newVector.angle = 90;
+            newPosition.y = newPosition.y + 1;
+            break;
+          case 'bottom':
+            newVector.angle = 270;
+            newPosition.y = newPosition.y - 1;
+            break;
+          case 'left':
+            newVector.angle = 0;
+            newPosition.x = newPosition.x + 1;
+            break;
+          case 'right':
+            newVector.angle = 180;
+            newPosition.x = newPosition.y - 1;
+          }
+        }
       }
+      this.set({
+        'position': newPosition
+      });
+      return this.set({
+        'vector': newVector
+      });
     };
 
     BacteriumModel.prototype.age = function () {
@@ -184,8 +239,8 @@
       });
     };
 
-    BacteriumModel.prototype.collidesWith = function (x, y, radius) {
-      return this.distanceFrom(x, y) < radius + this.get('radius');
+    BacteriumModel.prototype.collidesWith = function (position, radius) {
+      return this.distanceFrom(position) < radius + this.get('radius');
     };
 
     BacteriumModel.prototype.collidesWithBacterium = function (otherBacterium) {
@@ -195,11 +250,11 @@
       return this.collidesWith(otherPosition.x, otherPosition.y, otherRadius);
     };
 
-    BacteriumModel.prototype.distanceFrom = function (x, y) {
+    BacteriumModel.prototype.distanceFrom = function (otherPosition) {
       var distance, height, length, position;
       position = this.get('position');
-      length = x - position.x;
-      height = y - position.y;
+      length = otherPosition.x - position.x;
+      height = otherPosition.y - position.y;
       distance = Math.sqrt(Math.pow(length, 2) + Math.pow(height, 2));
       return distance;
     };

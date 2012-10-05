@@ -31,24 +31,25 @@ class BacteriaModel extends Backbone.Model
     # Only add a bacterium in a position where it doesn't overlap another
     loop
       radius = _.random(minRadius, maxRadius)
-      x = _.random(0 + radius, c.BoardWidth  - radius);
-      y = _.random(0 + radius, c.BoardHeight - radius);
+      position = {}
+      position.x = _.random(0 + radius, c.BoardWidth  - radius);
+      position.y = _.random(0 + radius, c.BoardHeight - radius);
 
-      break if @noCollision(x, y, radius)
+      break if @noCollision(position, radius)
 
-    bac = new BacteriumModel(@getBuid(), clanid, x, y, radius, @)
+    bac = new BacteriumModel(@getBuid(), clanid, position, radius, @)
 
     @bacteria.add(bac)
 
   # TODO: rename to collision!!! stop the no not double negatives!
   # Check if the given x, y, radius would collide with an existing bacterium
-  noCollision: (x, y, radius, thisBacterium = false) ->
+  noCollision: (position, radius, thisBacterium = false) ->
 
     collision = false;
 
     @bacteria.forEach (bacterium) =>
-      if not thisBacterium or (bacterium is not thisBacterium)
-        if bacterium.collidesWith(x, y, radius)
+      if (thisBacterium is false) or (bacterium is not thisBacterium)
+        if bacterium.collidesWith(position, radius)
           collision = true;
 
     not collision
@@ -56,13 +57,46 @@ class BacteriaModel extends Backbone.Model
   # this model is essentially "the outside world" for a bacterium
   # so it is used as the sense of the bacterium
   # in this case, for collision detection
-  bumpsSomething: (thisBacterium, x, y) ->
+  bumpsSomething: (thisBacterium, newPosition) ->
 
-    radius = thisBacterium.get('radius')
-    position = thisBacterium.get('position')
+    collision = false
+    info = {}
 
-    return not @noCollision(position.x, position.y, radius, thisBacterium)
+    bumpsWall = @bumpsWall(thisBacterium)
+    if false is bumpsWall
+      radius = thisBacterium.get('radius')
+      #currentPosition = thisBacterium.get('position')
+      collision = not @noCollision(newPosition, radius, thisBacterium)
+    else
+      collision = true
+      info.obstacle = 'wall'
+      info.direction = bumpsWall
 
+    if not collision
+      return false
+    else
+      return info
+
+  bumpsWall: (bacterium) ->
+
+    bump = false
+
+    position = bacterium.get('position')
+    radius = bacterium.get('radius')
+
+    if position.x - radius < 0
+      bump = 'left'
+
+    if position.y - radius < 0
+      bump = 'top'
+
+    if position.x + radius > Config.BoardWidth
+      bump = 'right'
+
+    if position.y + radius > Config.BoardHeight
+      bump = 'bottom'
+
+    bump
 
   getBuid: ->
     ++@buid
@@ -79,13 +113,13 @@ class BacteriaModel extends Backbone.Model
 # It is modular and does it's thing
 class BacteriumModel extends Backbone.Model
 
-  initialize: (buid, clanid, x, y, radius, @outsideWorld) ->
+  initialize: (buid, clanid, position, radius, @outsideWorld) ->
     @set
       'buid': buid
       'clanid': clanid
       'position':
-        'x': x
-        'y': y
+        'x': position.x
+        'y': position.y
       'radius': radius
       'vector' :
         'angle' : Config.Bacterium.notAssigned
@@ -115,7 +149,6 @@ class BacteriumModel extends Backbone.Model
     if (vector.angle is Config.Bacterium.notAssigned)
       @assignAngle(vector)
 
-
     position = @get('position')
 
     dx = Math.cos(@toRadians(vector.angle)) * vector.magnitude
@@ -129,21 +162,44 @@ class BacteriumModel extends Backbone.Model
       'angle': vector.angle + _.random(-1 * Config.Bacterium.maxTurnDegrees, Config.Bacterium.maxTurnDegrees)
       'magnitude': vector.magnitude
 
-    if @outsideWorld.bumpsSomething(@, newPosition.x, newPosition.y)
-      console.log("collision")
-    else
-      @set
-        'position': newPosition
+    collision = @outsideWorld.bumpsSomething(@, newPosition)
 
-      @set
-        'vector': newVector
+    # we bumped into something
+    if false is collision
+      #do nothing
+    else
+      info = collision
+      # TODO: move wall into config
+      if ('wall' is info.obstacle)
+
+        switch info.direction
+          when 'top'
+            newVector.angle = 90
+            newPosition.y = newPosition.y + 1
+          when 'bottom'
+            newVector.angle = 270
+            newPosition.y = newPosition.y - 1
+          when 'left'
+            newVector.angle = 0
+            newPosition.x = newPosition.x + 1
+          when 'right'
+            newVector.angle = 180
+            newPosition.x = newPosition.y - 1
+
+
+
+    @set
+      'position': newPosition
+
+    @set
+      'vector': newVector
 
   age: ->
     @set
       'age' : @get('age') + 1
 
-  collidesWith: (x, y, radius) ->
-    @distanceFrom(x, y) < radius + @get('radius')
+  collidesWith: (position, radius) ->
+    @distanceFrom(position) < radius + @get('radius')
 
   collidesWithBacterium: (otherBacterium) ->
 
@@ -152,11 +208,11 @@ class BacteriumModel extends Backbone.Model
 
     @collidesWith(otherPosition.x, otherPosition.y, otherRadius)
 
-
-  distanceFrom: (x,y) ->
+  # TODO: do an x,y quick check to reduce number of sqrts you have to do
+  distanceFrom: (otherPosition) ->
     position = @get('position')
-    length = x - position.x
-    height = y - position.y
+    length = otherPosition.x - position.x
+    height = otherPosition.y - position.y
     distance = Math.sqrt(Math.pow(length, 2) + Math.pow(height, 2))
     distance
 
