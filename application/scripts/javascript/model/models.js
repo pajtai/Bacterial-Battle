@@ -70,7 +70,7 @@
     };
 
     BacteriaModel.prototype.noCollision = function (position, radius, thisBacterium) {
-      var collision, _this = this;
+      var collision;
       if (thisBacterium == null) {
         thisBacterium = false;
       }
@@ -78,6 +78,7 @@
       this.bacteria.forEach(function (bacterium) {
         if ((thisBacterium === false) || (bacterium === !thisBacterium)) {
           if (bacterium.collidesWith(position, radius)) {
+            console.log("bump");
             return collision = true;
           }
         }
@@ -221,7 +222,7 @@
             break;
           case 'right':
             newVector.angle = 180;
-            newPosition.x = newPosition.y - 1;
+            newPosition.x = newPosition.x - 1;
           }
         }
       }

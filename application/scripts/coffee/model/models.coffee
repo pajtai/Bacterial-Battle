@@ -47,9 +47,10 @@ class BacteriaModel extends Backbone.Model
 
     collision = false;
 
-    @bacteria.forEach (bacterium) =>
+    @bacteria.forEach (bacterium) ->
       if (thisBacterium is false) or (bacterium is not thisBacterium)
         if bacterium.collidesWith(position, radius)
+          console.log("bump")
           collision = true;
 
     not collision
@@ -63,6 +64,7 @@ class BacteriaModel extends Backbone.Model
     info = {}
 
     bumpsWall = @bumpsWall(thisBacterium)
+
     if false is bumpsWall
       radius = thisBacterium.get('radius')
       #currentPosition = thisBacterium.get('position')
@@ -77,6 +79,8 @@ class BacteriaModel extends Backbone.Model
     else
       return info
 
+  # return false if we did not hit a wall
+  # if we do hit a well, then describe which wall
   bumpsWall: (bacterium) ->
 
     bump = false
@@ -172,6 +176,7 @@ class BacteriumModel extends Backbone.Model
       # TODO: move wall into config
       if ('wall' is info.obstacle)
 
+        # If we hit a wall, then smartly turn away from it and move away from it
         switch info.direction
           when 'top'
             newVector.angle = 90
@@ -184,7 +189,7 @@ class BacteriumModel extends Backbone.Model
             newPosition.x = newPosition.x + 1
           when 'right'
             newVector.angle = 180
-            newPosition.x = newPosition.y - 1
+            newPosition.x = newPosition.x - 1
 
 
 
