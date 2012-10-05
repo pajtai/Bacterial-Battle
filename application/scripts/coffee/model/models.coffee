@@ -47,7 +47,7 @@ class BacteriaModel extends Backbone.Model
         if bacterium.collidesWith(x, y, radius)
           collision = true;
 
-    collision
+    not collision
 
   getBuid: ->
     ++@buid
