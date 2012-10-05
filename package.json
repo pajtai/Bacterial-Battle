@@ -28,7 +28,8 @@
         "grunt-reload":">=0.2.0",
         "grunt-beautify":">=0.1.0",
         "grunt-docco":">=0.1.1",
-        "docco":">=0.4.0"
+        "docco":">=0.4.0",
+        "grunt-css":">=0.2.1"
     },
     "keywords": []
 }

@@ -19,6 +19,7 @@ module.exports = function(grunt) {
             vendor:     '/scripts/vendor',
             coffee:     '/scripts/coffee',
             javascript: '/scripts/javascript',
+            css:        '/css',
 
             any: '**/*',
 
@@ -39,7 +40,8 @@ module.exports = function(grunt) {
                 developer: project.dirs.dev   + project.files.javascript,
                 appDocs: project.dirs.dev + project.files.docs,
                 docs: project.dirs.docs,
-                live:      project.dirs.live  + project.files.scripts
+                live:      project.dirs.live  + project.files.scripts,
+                bootCss: project.dirs.live + project.files.css + '/bootstrap.css'
             },
 
             coffee: {
@@ -86,6 +88,15 @@ module.exports = function(grunt) {
                     ],
                     dest: project.dirs.live + project.files.script + '/bacterial-battle.js',
                     separator: ';'
+                }
+            },
+
+            cssmin: {
+                bootstrap: {
+                    src: [
+                        project.dirs.live + project.files.css + '/bootstrap.css'
+                    ],
+                    dest: project.dirs.live + project.files.css + '/bootstrap.min.css'
                 }
             },
 
@@ -144,13 +155,14 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-reload');
     grunt.loadNpmTasks('grunt-beautify');
     grunt.loadNpmTasks('grunt-docco');
+    grunt.loadNpmTasks('grunt-css');
 
     grunt.loadTasks('./tasks/');
 
     // The main tasks.
     commonTasks = 'clean:developer clean:appDocs clean:docs docco cp:docs coffee ';
     grunt.registerTask('developer', commonTasks + 'beautify');
-    grunt.registerTask('live',      commonTasks + 'cp:live min usemin clean:live');
+    grunt.registerTask('live',      commonTasks + 'cp:live min cssmin usemin clean:live');
 
     grunt.registerTask('reloadServer', 'server reload watch');
 };
