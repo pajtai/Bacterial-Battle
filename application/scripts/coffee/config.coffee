@@ -1,7 +1,6 @@
 Config =
   BoardWidth: 1130,
   BoardHeight: 500,
-  BacteriumRadius: 20
   Colors:
     clanid: {}
     choices: [
@@ -18,6 +17,9 @@ Config =
     maxMovement: 3
     maxTurnDegrees: 45
     tick: 1000 / 10
+    radius:
+      max: 20
+      min: 10
 
 
 

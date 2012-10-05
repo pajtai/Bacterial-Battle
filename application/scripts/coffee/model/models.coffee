@@ -26,28 +26,43 @@ class BacteriaModel extends Backbone.Model
 
   addBacterium: (clanid) ->
     c = Config
-
+    minRadius = c.Bacterium.radius.min
+    maxRadius = c.Bacterium.radius.max
+    # Only add a bacterium in a position where it doesn't overlap another
     loop
-      x = _.random(0 + c.BacteriumRadius, c.BoardWidth - c.BacteriumRadius);
-      y = _.random(0 + c.BacteriumRadius, c.BoardHeight - c.BacteriumRadius);
-      radius = c.BacteriumRadius
+      radius = _.random(minRadius, maxRadius)
+      x = _.random(0 + radius, c.BoardWidth  - radius);
+      y = _.random(0 + radius, c.BoardHeight - radius);
+
       break if @noCollision(x, y, radius)
 
-    bac = new BacteriumModel(@getBuid(), clanid, x, y, radius, clanid)
+    bac = new BacteriumModel(@getBuid(), clanid, x, y, radius, @)
 
     @bacteria.add(bac)
 
+  # TODO: rename to collision!!! stop the no not double negatives!
   # Check if the given x, y, radius would collide with an existing bacterium
-  noCollision: (x, y, radius) ->
-    return true if @bacteria.length < 1
+  noCollision: (x, y, radius, thisBacterium = false) ->
 
     collision = false;
 
     @bacteria.forEach (bacterium) =>
+      if not thisBacterium or (bacterium is not thisBacterium)
         if bacterium.collidesWith(x, y, radius)
           collision = true;
 
     not collision
+
+  # this model is essentially "the outside world" for a bacterium
+  # so it is used as the sense of the bacterium
+  # in this case, for collision detection
+  bumpsSomething: (thisBacterium, x, y) ->
+
+    radius = thisBacterium.get('radius')
+    position = thisBacterium.get('position')
+
+    return not @noCollision(position.x, position.y, radius, thisBacterium)
+
 
   getBuid: ->
     ++@buid
@@ -64,7 +79,7 @@ class BacteriaModel extends Backbone.Model
 # It is modular and does it's thing
 class BacteriumModel extends Backbone.Model
 
-  initialize: (buid, clanid, x, y, radius) ->
+  initialize: (buid, clanid, x, y, radius, @outsideWorld) ->
     @set
       'buid': buid
       'clanid': clanid
@@ -114,11 +129,14 @@ class BacteriumModel extends Backbone.Model
       'angle': vector.angle + _.random(-1 * Config.Bacterium.maxTurnDegrees, Config.Bacterium.maxTurnDegrees)
       'magnitude': vector.magnitude
 
-    @set
-      'position': newPosition
+    if @outsideWorld.bumpsSomething(@, newPosition.x, newPosition.y)
+      console.log("collision")
+    else
+      @set
+        'position': newPosition
 
-    @set
-      'vector': newVector
+      @set
+        'vector': newVector
 
   age: ->
     @set
@@ -127,11 +145,20 @@ class BacteriumModel extends Backbone.Model
   collidesWith: (x, y, radius) ->
     @distanceFrom(x, y) < radius + @get('radius')
 
+  collidesWithBacterium: (otherBacterium) ->
+
+    otherPosition = otherBacterium.get('position')
+    otherRadius = otherBacterium.get('radius')
+
+    @collidesWith(otherPosition.x, otherPosition.y, otherRadius)
+
+
   distanceFrom: (x,y) ->
     position = @get('position')
     length = x - position.x
     height = y - position.y
-    Math.sqrt(length^2 + height^2)
+    distance = Math.sqrt(Math.pow(length, 2) + Math.pow(height, 2))
+    distance
 
 
 # This is a collection of individual bacteria

@@ -166,9 +166,9 @@ module.exports = function(grunt) {
     grunt.loadTasks('./tasks/');
 
     // The main tasks.
-    commonTasks = 'clean:developer clean:appDocs clean:docs docco cp:docs coffee ';
-    grunt.registerTask('developer', commonTasks + 'beautify');
-    grunt.registerTask('live',      commonTasks + 'cp:live min cssmin usemin clean:live clean:bootCss');
+    commonTasks = 'clean:developer clean:appDocs clean:docs docco cp:docs coffee beautify';
+    grunt.registerTask('developer', commonTasks);
+    grunt.registerTask('live',      commonTasks + ' cp:live min cssmin usemin clean:live clean:bootCss');
 
     grunt.registerTask('reloadServer', 'server reload watch');
 };

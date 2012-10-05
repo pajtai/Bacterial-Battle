@@ -5,8 +5,8 @@ It tracks changes in the entire population and controls population wide events</
   <span class="nv">initialize: </span><span class="nf">(@population) -&gt;</span>
     <span class="vi">@buid = </span><span class="mi">0</span>
     <span class="vi">@bacteria = </span><span class="k">new</span> <span class="nx">BacteriumCollection</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>fat arrow binds "this" to callback (self = this)
-listen for the addition of bacteria to the collection</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">@bacteria</span><span class="p">.</span><span class="kc">on</span> <span class="s">&quot;add&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">bacterium</span><span class="p">)</span> <span class="o">=&gt;</span>
-      <span class="nx">@mediator</span><span class="p">.</span><span class="nx">bacteriumModelAdded</span><span class="p">(</span><span class="nx">bacterium</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>listen to changes in position of the bacteria in the collection</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">@bacteria</span><span class="p">.</span><span class="kc">on</span> <span class="s">&quot;change:position&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">bacterium</span><span class="p">)</span> <span class="o">=&gt;</span>
+listen for the addition of bacteria to the collection</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">@bacteria</span><span class="p">.</span><span class="kc">on</span> <span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">bacterium</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="nx">@mediator</span><span class="p">.</span><span class="nx">bacteriumModelAdded</span><span class="p">(</span><span class="nx">bacterium</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>listen to changes in position of the bacteria in the collection</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">@bacteria</span><span class="p">.</span><span class="kc">on</span> <span class="s2">&quot;change:position&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">bacterium</span><span class="p">)</span> <span class="o">=&gt;</span>
       <span class="nx">@mediator</span><span class="p">.</span><span class="nx">bacteriumMoved</span><span class="p">(</span><span class="nx">bacterium</span><span class="p">)</span>
 
   <span class="nv">addMediator: </span><span class="nf">(@mediator) -&gt;</span>
@@ -17,25 +17,35 @@ listen for the addition of bacteria to the collection</p>             </td>     
 
   <span class="nv">addBacterium: </span><span class="nf">(clanid) -&gt;</span>
     <span class="nv">c = </span><span class="nx">Config</span>
+    <span class="nv">minRadius = </span><span class="nx">c</span><span class="p">.</span><span class="nx">Bacterium</span><span class="p">.</span><span class="nx">radius</span><span class="p">.</span><span class="nx">min</span>
+    <span class="nv">maxRadius = </span><span class="nx">c</span><span class="p">.</span><span class="nx">Bacterium</span><span class="p">.</span><span class="nx">radius</span><span class="p">.</span><span class="nx">max</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Only add a bacterium in a position where it doesn't overlap another</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">loop</span>
+      <span class="nv">radius = </span><span class="nx">_</span><span class="p">.</span><span class="nx">random</span><span class="p">(</span><span class="nx">minRadius</span><span class="p">,</span> <span class="nx">maxRadius</span><span class="p">)</span>
+      <span class="nv">x = </span><span class="nx">_</span><span class="p">.</span><span class="nx">random</span><span class="p">(</span><span class="mi">0</span> <span class="o">+</span> <span class="nx">radius</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">BoardWidth</span>  <span class="o">-</span> <span class="nx">radius</span><span class="p">);</span>
+      <span class="nv">y = </span><span class="nx">_</span><span class="p">.</span><span class="nx">random</span><span class="p">(</span><span class="mi">0</span> <span class="o">+</span> <span class="nx">radius</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">BoardHeight</span> <span class="o">-</span> <span class="nx">radius</span><span class="p">);</span>
 
-    <span class="nx">loop</span>
-      <span class="nv">x = </span><span class="nx">_</span><span class="p">.</span><span class="nx">random</span><span class="p">(</span><span class="mi">0</span> <span class="o">+</span> <span class="nx">c</span><span class="p">.</span><span class="nx">BacteriumRadius</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">BoardWidth</span> <span class="o">-</span> <span class="nx">c</span><span class="p">.</span><span class="nx">BacteriumRadius</span><span class="p">);</span>
-      <span class="nv">y = </span><span class="nx">_</span><span class="p">.</span><span class="nx">random</span><span class="p">(</span><span class="mi">0</span> <span class="o">+</span> <span class="nx">c</span><span class="p">.</span><span class="nx">BacteriumRadius</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">BoardHeight</span> <span class="o">-</span> <span class="nx">c</span><span class="p">.</span><span class="nx">BacteriumRadius</span><span class="p">);</span>
-      <span class="nv">radius = </span><span class="nx">c</span><span class="p">.</span><span class="nx">BacteriumRadius</span>
       <span class="k">break</span> <span class="k">if</span> <span class="nx">@noCollision</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">radius</span><span class="p">)</span>
 
-    <span class="nv">bac = </span><span class="k">new</span> <span class="nx">BacteriumModel</span><span class="p">(</span><span class="nx">@getBuid</span><span class="p">(),</span> <span class="nx">clanid</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">radius</span><span class="p">,</span> <span class="nx">clanid</span><span class="p">)</span>
+    <span class="nv">bac = </span><span class="k">new</span> <span class="nx">BacteriumModel</span><span class="p">(</span><span class="nx">@getBuid</span><span class="p">(),</span> <span class="nx">clanid</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">radius</span><span class="p">,</span> <span class="err">@</span><span class="p">)</span>
 
-    <span class="nx">@bacteria</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">bac</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Check if the given x, y, radius would collide with an existing bacterium</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">noCollision: </span><span class="nf">(x, y, radius) -&gt;</span>
-    <span class="k">return</span> <span class="kc">true</span> <span class="k">if</span> <span class="nx">@bacteria</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">1</span>
+    <span class="nx">@bacteria</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">bac</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>TODO: rename to collision!!! stop the no not double negatives!
+Check if the given x, y, radius would collide with an existing bacterium</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">noCollision: </span><span class="nf">(x, y, radius, thisBacterium = false) -&gt;</span>
 
     <span class="nv">collision = </span><span class="kc">false</span><span class="p">;</span>
 
     <span class="nx">@bacteria</span><span class="p">.</span><span class="nx">forEach</span> <span class="p">(</span><span class="nx">bacterium</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="k">if</span> <span class="o">not</span> <span class="nx">thisBacterium</span> <span class="o">or</span> <span class="p">(</span><span class="nx">bacterium</span> <span class="o">is</span> <span class="o">not</span> <span class="nx">thisBacterium</span><span class="p">)</span>
         <span class="k">if</span> <span class="nx">bacterium</span><span class="p">.</span><span class="nx">collidesWith</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">radius</span><span class="p">)</span>
           <span class="nv">collision = </span><span class="kc">true</span><span class="p">;</span>
 
-    <span class="nx">collision</span>
+    <span class="o">not</span> <span class="nx">collision</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>this model is essentially "the outside world" for a bacterium
+so it is used as the sense of the bacterium
+in this case, for collision detection</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">bumpsSomething: </span><span class="nf">(thisBacterium, x, y) -&gt;</span>
+
+    <span class="nv">radius = </span><span class="nx">thisBacterium</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">)</span>
+    <span class="nv">position = </span><span class="nx">thisBacterium</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;position&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="o">not</span> <span class="nx">@noCollision</span><span class="p">(</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">position</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">radius</span><span class="p">,</span> <span class="nx">thisBacterium</span><span class="p">)</span>
+
 
   <span class="nv">getBuid: </span><span class="o">-&gt;</span>
     <span class="o">++</span><span class="nx">@buid</span>
@@ -45,22 +55,22 @@ listen for the addition of bacteria to the collection</p>             </td>     
       <span class="nx">@bacteria</span><span class="p">.</span><span class="nx">forEach</span> <span class="p">(</span><span class="nx">bacterium</span><span class="p">)</span> <span class="o">=&gt;</span>
         <span class="nx">bacterium</span><span class="p">.</span><span class="nx">update</span><span class="p">()</span>
       <span class="nx">@mediator</span><span class="p">.</span><span class="nx">tick</span><span class="p">()</span>
-    <span class="p">,</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">Bacterium</span><span class="p">.</span><span class="nx">tick</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>This is a model of an individual bacterium
+    <span class="p">,</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">Bacterium</span><span class="p">.</span><span class="nx">tick</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>This is a model of an individual bacterium
 It doesn't know or care who is watching / listening to it
 It is modular and does it's thing</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">BacteriumModel</span> <span class="k">extends</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Model</span>
 
-  <span class="nv">initialize: </span><span class="nf">(buid, clanid, x, y, radius) -&gt;</span>
+  <span class="nv">initialize: </span><span class="nf">(buid, clanid, x, y, radius, @outsideWorld) -&gt;</span>
     <span class="nx">@set</span>
-      <span class="s">&#39;buid&#39;</span><span class="o">:</span> <span class="nx">buid</span>
-      <span class="s">&#39;clanid&#39;</span><span class="o">:</span> <span class="nx">clanid</span>
-      <span class="s">&#39;position&#39;</span><span class="o">:</span>
-        <span class="s">&#39;x&#39;</span><span class="o">:</span> <span class="nx">x</span>
-        <span class="s">&#39;y&#39;</span><span class="o">:</span> <span class="nx">y</span>
-      <span class="s">&#39;radius&#39;</span><span class="o">:</span> <span class="nx">radius</span>
-      <span class="s">&#39;vector&#39;</span> <span class="o">:</span>
-        <span class="s">&#39;angle&#39;</span> <span class="o">:</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">Bacterium</span><span class="p">.</span><span class="nx">notAssigned</span>
-        <span class="s">&#39;magnitude&#39;</span><span class="o">:</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">Bacterium</span><span class="p">.</span><span class="nx">defaultVectorLength</span>
-      <span class="s">&#39;age&#39;</span> <span class="o">:</span> <span class="mi">0</span>
+      <span class="s1">&#39;buid&#39;</span><span class="o">:</span> <span class="nx">buid</span>
+      <span class="s1">&#39;clanid&#39;</span><span class="o">:</span> <span class="nx">clanid</span>
+      <span class="s1">&#39;position&#39;</span><span class="o">:</span>
+        <span class="s1">&#39;x&#39;</span><span class="o">:</span> <span class="nx">x</span>
+        <span class="s1">&#39;y&#39;</span><span class="o">:</span> <span class="nx">y</span>
+      <span class="s1">&#39;radius&#39;</span><span class="o">:</span> <span class="nx">radius</span>
+      <span class="s1">&#39;vector&#39;</span> <span class="o">:</span>
+        <span class="s1">&#39;angle&#39;</span> <span class="o">:</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">Bacterium</span><span class="p">.</span><span class="nx">notAssigned</span>
+        <span class="s1">&#39;magnitude&#39;</span><span class="o">:</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">Bacterium</span><span class="p">.</span><span class="nx">defaultVectorLength</span>
+      <span class="s1">&#39;age&#39;</span> <span class="o">:</span> <span class="mi">0</span>
 
   <span class="nv">update: </span><span class="o">-&gt;</span>
     <span class="nx">@move</span><span class="p">()</span>
@@ -70,54 +80,66 @@ It is modular and does it's thing</p>             </td>             <td class="c
     <span class="nv">vector.angle = </span><span class="nx">_</span><span class="p">.</span><span class="nx">random</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
 
   <span class="nv">toRadians: </span><span class="nf">(angle) -&gt;</span>
-    <span class="nx">angle</span> <span class="o">*</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">180</span><span class="p">);</span>
+    <span class="nx">angle</span> <span class="o">*</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="err">/ 180);</span>
 
 
   <span class="nv">move: </span><span class="o">-&gt;</span>
-    <span class="nv">range = </span><span class="nx">Config</span><span class="p">.</span><span class="nx">Bacterium</span><span class="p">.</span><span class="nx">maxMovement</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Using vectors for bacterial motion. Randomly changing just x, y positions results in "Brownian motion"
+    <span class="nv">range = </span><span class="nx">Config</span><span class="p">.</span><span class="nx">Bacterium</span><span class="p">.</span><span class="nx">maxMovement</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Using vectors for bacterial motion. Randomly changing just x, y positions results in "Brownian motion"
 Using a vector and slowly changing it give the bacter "momentum"
 Bacterium doesn't know this, but view are getting changes in x, y bubbled up and are unaware that
-a vector is involed. This made it easy to initially add in vectors vs pure x,y</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">vector = </span><span class="nx">@get</span><span class="p">(</span><span class="s">&#39;vector&#39;</span><span class="p">)</span>
+a vector is involed. This made it easy to initially add in vectors vs pure x,y</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">vector = </span><span class="nx">@get</span><span class="p">(</span><span class="s1">&#39;vector&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="nx">vector</span><span class="p">.</span><span class="nx">angle</span> <span class="o">is</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">Bacterium</span><span class="p">.</span><span class="nx">notAssigned</span><span class="p">)</span>
       <span class="nx">@assignAngle</span><span class="p">(</span><span class="nx">vector</span><span class="p">)</span>
 
 
-    <span class="nv">position = </span><span class="nx">@get</span><span class="p">(</span><span class="s">&#39;position&#39;</span><span class="p">)</span>
+    <span class="nv">position = </span><span class="nx">@get</span><span class="p">(</span><span class="s1">&#39;position&#39;</span><span class="p">)</span>
 
     <span class="nv">dx = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">@toRadians</span><span class="p">(</span><span class="nx">vector</span><span class="p">.</span><span class="nx">angle</span><span class="p">))</span> <span class="o">*</span> <span class="nx">vector</span><span class="p">.</span><span class="nx">magnitude</span>
     <span class="nv">dy = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">@toRadians</span><span class="p">(</span><span class="nx">vector</span><span class="p">.</span><span class="nx">angle</span><span class="p">))</span> <span class="o">*</span> <span class="nx">vector</span><span class="p">.</span><span class="nx">magnitude</span>
 
     <span class="nv">newPosition =</span>
-      <span class="s">&#39;x&#39;</span><span class="o">:</span> <span class="nx">position</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">dx</span>
-      <span class="s">&#39;y&#39;</span><span class="o">:</span> <span class="nx">position</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">dy</span>
+      <span class="s1">&#39;x&#39;</span><span class="o">:</span> <span class="nx">position</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">dx</span>
+      <span class="s1">&#39;y&#39;</span><span class="o">:</span> <span class="nx">position</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">dy</span>
 
     <span class="nv">newVector =</span>
-      <span class="s">&#39;angle&#39;</span><span class="o">:</span> <span class="nx">vector</span><span class="p">.</span><span class="nx">angle</span> <span class="o">+</span> <span class="nx">_</span><span class="p">.</span><span class="nx">random</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">Bacterium</span><span class="p">.</span><span class="nx">maxTurnDegrees</span><span class="p">,</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">Bacterium</span><span class="p">.</span><span class="nx">maxTurnDegrees</span><span class="p">)</span>
-      <span class="s">&#39;magnitude&#39;</span><span class="o">:</span> <span class="nx">vector</span><span class="p">.</span><span class="nx">magnitude</span>
+      <span class="s1">&#39;angle&#39;</span><span class="o">:</span> <span class="nx">vector</span><span class="p">.</span><span class="nx">angle</span> <span class="o">+</span> <span class="nx">_</span><span class="p">.</span><span class="nx">random</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">Bacterium</span><span class="p">.</span><span class="nx">maxTurnDegrees</span><span class="p">,</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">Bacterium</span><span class="p">.</span><span class="nx">maxTurnDegrees</span><span class="p">)</span>
+      <span class="s1">&#39;magnitude&#39;</span><span class="o">:</span> <span class="nx">vector</span><span class="p">.</span><span class="nx">magnitude</span>
 
-    <span class="nx">@set</span>
-      <span class="s">&#39;position&#39;</span><span class="o">:</span> <span class="nx">newPosition</span>
+    <span class="k">if</span> <span class="nx">@outsideWorld</span><span class="p">.</span><span class="nx">bumpsSomething</span><span class="p">(</span><span class="err">@</span><span class="p">,</span> <span class="nx">newPosition</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">newPosition</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;collision&quot;</span><span class="p">)</span>
+    <span class="k">else</span>
+      <span class="nx">@set</span>
+        <span class="s1">&#39;position&#39;</span><span class="o">:</span> <span class="nx">newPosition</span>
 
-    <span class="nx">@set</span>
-      <span class="s">&#39;vector&#39;</span><span class="o">:</span> <span class="nx">newVector</span>
+      <span class="nx">@set</span>
+        <span class="s1">&#39;vector&#39;</span><span class="o">:</span> <span class="nx">newVector</span>
 
   <span class="nv">age: </span><span class="o">-&gt;</span>
     <span class="nx">@set</span>
-      <span class="s">&#39;age&#39;</span> <span class="o">:</span> <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;age&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+      <span class="s1">&#39;age&#39;</span> <span class="o">:</span> <span class="nx">@get</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
   <span class="nv">collidesWith: </span><span class="nf">(x, y, radius) -&gt;</span>
-    <span class="nx">@distanceFrom</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nx">radius</span> <span class="o">+</span> <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;radius&#39;</span><span class="p">)</span>
+    <span class="nx">@distanceFrom</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nx">radius</span> <span class="o">+</span> <span class="nx">@get</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">)</span>
+
+  <span class="nv">collidesWithBacterium: </span><span class="nf">(otherBacterium) -&gt;</span>
+
+    <span class="nv">otherPosition = </span><span class="nx">otherBacterium</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;position&#39;</span><span class="p">)</span>
+    <span class="nv">otherRadius = </span><span class="nx">otherBacterium</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">)</span>
+
+    <span class="nx">@collidesWith</span><span class="p">(</span><span class="nx">otherPosition</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">otherPosition</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">otherRadius</span><span class="p">)</span>
+
 
   <span class="nv">distanceFrom: </span><span class="nf">(x,y) -&gt;</span>
-    <span class="nv">position = </span><span class="nx">@get</span><span class="p">(</span><span class="s">&#39;position&#39;</span><span class="p">)</span>
+    <span class="nv">position = </span><span class="nx">@get</span><span class="p">(</span><span class="s1">&#39;position&#39;</span><span class="p">)</span>
     <span class="nv">length = </span><span class="nx">x</span> <span class="o">-</span> <span class="nx">position</span><span class="p">.</span><span class="nx">x</span>
     <span class="nv">height = </span><span class="nx">y</span> <span class="o">-</span> <span class="nx">position</span><span class="p">.</span><span class="nx">y</span>
-    <span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="nx">length</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="nx">height</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>This is a collection of individual bacteria
+    <span class="nv">distance = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="nx">length</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="nx">height</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="nx">distance</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>This is a collection of individual bacteria
 Backbone provides some useful functionality with collections, making it easy to track changes on any model
 in a collection, to track addition and deletion of models, etc</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">BacteriumCollection</span> <span class="k">extends</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Collection</span>
 
-  <span class="nv">model: </span><span class="nx">BacteriumModel</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>We export the population model
+  <span class="nv">model: </span><span class="nx">BacteriumModel</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>We export the population model
 There is no need for anyone else to know about the individual bacteria
 This keeps things clean and allows future changes to the models without having to worry about
 affecting View functionality</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nv">BacB.BacteriaModal = </span><span class="nx">BacteriaModel</span>
