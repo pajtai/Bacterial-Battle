@@ -143,7 +143,7 @@ module.exports = function(grunt) {
                     project.dirs.dev + '/' + project.files.any + project.files.dot.html,
                     project.dirs.dev + '/' + project.files.any + project.files.dot.coffee
                 ],
-                tasks: 'developer reload'
+                tasks: 'clean:developer coffee beautify reload'
             }
 
         };

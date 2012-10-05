@@ -1,4 +1,4 @@
-(function() {
+(function () {
   var BacB, BacteriaModel, BacteriumView, Config, Mediator, MediumView, bacteria, mediator, paper;
 
   BacB = window.BacB;

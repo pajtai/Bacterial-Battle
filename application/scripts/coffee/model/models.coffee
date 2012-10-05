@@ -26,13 +26,28 @@ class BacteriaModel extends Backbone.Model
 
   addBacterium: (clanid) ->
     c = Config
-    x = _.random(0 + c.BacteriumRadius, c.BoardWidth - c.BacteriumRadius);
-    y = _.random(0 + c.BacteriumRadius, c.BoardHeight - c.BacteriumRadius);
-    radius = c.BacteriumRadius
+
+    loop
+      x = _.random(0 + c.BacteriumRadius, c.BoardWidth - c.BacteriumRadius);
+      y = _.random(0 + c.BacteriumRadius, c.BoardHeight - c.BacteriumRadius);
+      radius = c.BacteriumRadius
+      break if @noCollision(x, y, radius)
 
     bac = new BacteriumModel(@getBuid(), clanid, x, y, radius, clanid)
 
     @bacteria.add(bac)
+
+  # Check if the given x, y, radius would collide with an existing bacterium
+  noCollision: (x, y, radius) ->
+    return true if @bacteria.length < 1
+
+    collision = false;
+
+    @bacteria.forEach (bacterium) =>
+        if bacterium.collidesWith(x, y, radius)
+          collision = true;
+
+    collision
 
   getBuid: ->
     ++@buid
@@ -108,6 +123,16 @@ class BacteriumModel extends Backbone.Model
   age: ->
     @set
       'age' : @get('age') + 1
+
+  collidesWith: (x, y, radius) ->
+    @distanceFrom(x, y) < radius + @get('radius')
+
+  distanceFrom: (x,y) ->
+    position = @get('position')
+    length = x - position.x
+    height = y - position.y
+    Math.sqrt(length^2 + height^2)
+
 
 # This is a collection of individual bacteria
 # Backbone provides some useful functionality with collections, making it easy to track changes on any model
