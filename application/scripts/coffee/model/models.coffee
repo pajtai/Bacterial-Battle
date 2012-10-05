@@ -43,22 +43,23 @@ class BacteriaModel extends Backbone.Model
 
   bacterialPredation: (predator, prey) ->
 
-    @mediator.kill(prey)
-    @bacteria.remove(prey)
+    pi = Math.PI
+    pow = Math.pow
 
-    prey.set
-      'alive': false
+    @bacteria.remove(prey)
+    @mediator.kill(prey)
+
 
     radius1 = predator.get('radius')
     radius2 = prey.get('radius')
-    totalRadius = radius1 + radius2
-    totalArea = Math.PI * Math.pow(totalRadius, 2)
+    area1 = pi * pow(radius1, 2)
+    area2 = pi * pow(radius2, 2)
+    totalArea = area1 + area2
 
     newRadius = Math.sqrt(totalArea / Math.PI)
 
     predator.set
       'radius': newRadius
-
 
 
   removeBacterium: (bacterium) ->

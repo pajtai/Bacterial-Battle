@@ -70,16 +70,16 @@
     };
 
     BacteriaModel.prototype.bacterialPredation = function (predator, prey) {
-      var newRadius, radius1, radius2, totalArea, totalRadius;
-      this.mediator.kill(prey);
+      var area1, area2, newRadius, pi, pow, radius1, radius2, totalArea;
+      pi = Math.PI;
+      pow = Math.pow;
       this.bacteria.remove(prey);
-      prey.set({
-        'alive': false
-      });
+      this.mediator.kill(prey);
       radius1 = predator.get('radius');
       radius2 = prey.get('radius');
-      totalRadius = radius1 + radius2;
-      totalArea = Math.PI * Math.pow(totalRadius, 2);
+      area1 = pi * pow(radius1, 2);
+      area2 = pi * pow(radius2, 2);
+      totalArea = area1 + area2;
       newRadius = Math.sqrt(totalArea / Math.PI);
       return predator.set({
         'radius': newRadius

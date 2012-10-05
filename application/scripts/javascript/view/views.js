@@ -74,7 +74,6 @@
     };
 
     BacteriumView.prototype.kill = function () {
-      console.log("goone");
       return this.self.remove();
     };
 

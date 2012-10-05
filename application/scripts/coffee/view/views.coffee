@@ -47,7 +47,6 @@ class BacteriumView extends Backbone.View
     color
 
   kill: ->
-    console.log("goone")
     @self.remove()
 
   # Move the bacterium. No real logic here, just check the state of the model.
