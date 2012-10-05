@@ -46,12 +46,22 @@ class BacteriumView extends Backbone.View
 
     color
 
+  kill: ->
+    console.log("goone")
+    @self.remove()
+
   # Move the bacterium. No real logic here, just check the state of the model.
   move: ->
+
     position = @model.get('position')
+    radius = @model.get('radius')
 
     @self.attr("cx", position.x)
     @self.attr("cy", position.y)
+    window.count = window.count or 1
+    window.count = window.count + 1
+
+    @self.attr("r", radius)
 
     # If the bacterium is glowing, preserve the glow by moving it with the bacterium's movement
     if @glow
@@ -132,8 +142,10 @@ class MediumView extends Backbone.View
     )
 
   moveBacterium: (bacterium) ->
-
     @bacteriumViews["buid#{bacterium.get('buid')}"].move()
+
+  kill: (bacterium) ->
+    @bacteriumViews["buid#{bacterium.get('buid')}"].kill()
 
   tick: ->
     if @glowingBacterium

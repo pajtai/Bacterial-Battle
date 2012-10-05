@@ -23,11 +23,11 @@
 
   bacteria.addMediator(mediator);
 
-  bacteria.addPopulation(10, "c1");
+  bacteria.addPopulation(15, "c1");
 
-  bacteria.addPopulation(10, "c2");
+  bacteria.addPopulation(15, "c2");
 
-  bacteria.addPopulation(10, "c3");
+  bacteria.addPopulation(15, "c3");
 
   bacteria.move();
 

@@ -20,6 +20,8 @@ class Mediator extends Backbone.Model
   tick: ->
     @medium.tick()
 
+  kill: (bacterium) ->
+    @medium.kill(bacterium)
 
 
 window.BacB.Mediator = Mediator

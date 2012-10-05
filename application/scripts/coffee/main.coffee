@@ -21,8 +21,8 @@ paper.addMediator(mediator)
 bacteria.addMediator(mediator)
 
 # setup the bacteria - views are now listening via backbone / mediator
-bacteria.addPopulation(10, "c1")
-bacteria.addPopulation(10, "c2")
-bacteria.addPopulation(10, "c3")
+bacteria.addPopulation(15, "c1")
+bacteria.addPopulation(15, "c2")
+bacteria.addPopulation(15, "c3")
 
 bacteria.move()

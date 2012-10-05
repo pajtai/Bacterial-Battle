@@ -69,31 +69,60 @@
       return this.bacteria.add(bac);
     };
 
-    BacteriaModel.prototype.noCollision = function (position, radius, thisBacterium) {
+    BacteriaModel.prototype.bacterialPredation = function (predator, prey) {
+      var newRadius, radius1, radius2, totalArea, totalRadius;
+      this.mediator.kill(prey);
+      this.bacteria.remove(prey);
+      prey.set({
+        'alive': false
+      });
+      radius1 = predator.get('radius');
+      radius2 = prey.get('radius');
+      totalRadius = radius1 + radius2;
+      totalArea = Math.PI * Math.pow(totalRadius, 2);
+      newRadius = Math.sqrt(totalArea / Math.PI);
+      return predator.set({
+        'radius': newRadius
+      });
+    };
+
+    BacteriaModel.prototype.removeBacterium = function (bacterium) {
+      return this.bacteria.remove(bacterium);
+    };
+
+    BacteriaModel.prototype.noCollision = function (position, radius) {
       var collision;
-      if (thisBacterium == null) {
-        thisBacterium = false;
-      }
       collision = false;
       this.bacteria.forEach(function (bacterium) {
-        if ((thisBacterium === false) || (bacterium === !thisBacterium)) {
-          if (bacterium.collidesWith(position, radius)) {
-            console.log("bump");
-            return collision = true;
-          }
+        if (bacterium.collidesWith(position, radius)) {
+          return collision = true;
         }
       });
       return !collision;
     };
 
-    BacteriaModel.prototype.bumpsSomething = function (thisBacterium, newPosition) {
-      var bumpsWall, collision, info, radius;
+    BacteriaModel.prototype.bacterialCollision = function (thisBacterium) {
+      var collision;
+      collision = false;
+      this.bacteria.forEach(function (bacterium) {
+        if ((bacterium !== thisBacterium) && bacterium.collidesWithBacterium(thisBacterium)) {
+          return collision = bacterium;
+        }
+      });
+      return collision;
+    };
+
+    BacteriaModel.prototype.bumpsSomething = function (thisBacterium) {
+      var bumpsWall, collision, info;
       collision = false;
       info = {};
       bumpsWall = this.bumpsWall(thisBacterium);
       if (false === bumpsWall) {
-        radius = thisBacterium.get('radius');
-        collision = !this.noCollision(newPosition, radius, thisBacterium);
+        collision = this.bacterialCollision(thisBacterium);
+        if (collision) {
+          info.obstacle = 'bacterium';
+          info.bacterium = collision;
+        }
       } else {
         collision = true;
         info.obstacle = 'wall';
@@ -134,7 +163,9 @@
       var _this = this;
       return setInterval(function () {
         _this.bacteria.forEach(function (bacterium) {
-          return bacterium.update();
+          if (bacterium) {
+            return bacterium.update();
+          }
         });
         return _this.mediator.tick();
       }, Config.Bacterium.tick);
@@ -166,7 +197,8 @@
           'angle': Config.Bacterium.notAssigned,
           'magnitude': Config.Bacterium.defaultVectorLength
         },
-        'age': 0
+        'age': 0,
+        'alive': true
       });
     };
 
@@ -201,10 +233,14 @@
         'angle': vector.angle + _.random(-1 * Config.Bacterium.maxTurnDegrees, Config.Bacterium.maxTurnDegrees),
         'magnitude': vector.magnitude
       };
-      collision = this.outsideWorld.bumpsSomething(this, newPosition);
-      if (false === collision) {
-
-      } else {
+      this.set({
+        'position': newPosition
+      });
+      this.set({
+        'vector': newVector
+      });
+      collision = this.outsideWorld.bumpsSomething(this);
+      if (false !== collision) {
         info = collision;
         if ('wall' === info.obstacle) {
           switch (info.direction) {
@@ -224,14 +260,34 @@
             newVector.angle = 180;
             newPosition.x = newPosition.x - 1;
           }
+          this.set({
+            'position': newPosition
+          });
+          this.set({
+            'vector': newVector
+          });
+        }
+        if ('bacterium' === info.obstacle) {
+          return this.bacterialFight(info.bacterium);
         }
       }
-      this.set({
-        'position': newPosition
+    };
+
+    BacteriumModel.prototype.bacterialFight = function (otherBacterium) {
+      var myRadius, otherRadius, predator, prey;
+      otherRadius = otherBacterium.get('radius');
+      myRadius = this.get('radius');
+      if (myRadius >= otherRadius) {
+        predator = this;
+        prey = otherBacterium;
+      } else {
+        predator = otherBacterium;
+        prey = this;
+      }
+      prey.set({
+        'alive': false
       });
-      return this.set({
-        'vector': newVector
-      });
+      return this.outsideWorld.bacterialPredation(predator, prey);
     };
 
     BacteriumModel.prototype.age = function () {
@@ -241,14 +297,20 @@
     };
 
     BacteriumModel.prototype.collidesWith = function (position, radius) {
+      if (!this.get('alive')) {
+        return false;
+      }
       return this.distanceFrom(position) < radius + this.get('radius');
     };
 
     BacteriumModel.prototype.collidesWithBacterium = function (otherBacterium) {
       var otherPosition, otherRadius;
+      if (!this.get('alive')) {
+        return false;
+      }
       otherPosition = otherBacterium.get('position');
       otherRadius = otherBacterium.get('radius');
-      return this.collidesWith(otherPosition.x, otherPosition.y, otherRadius);
+      return this.collidesWith(otherPosition, otherRadius);
     };
 
     BacteriumModel.prototype.distanceFrom = function (otherPosition) {

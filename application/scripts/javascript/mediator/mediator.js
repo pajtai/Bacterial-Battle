@@ -40,6 +40,10 @@
       return this.medium.tick();
     };
 
+    Mediator.prototype.kill = function (bacterium) {
+      return this.medium.kill(bacterium);
+    };
+
     return Mediator;
 
   })(Backbone.Model);

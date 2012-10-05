@@ -73,11 +73,20 @@
       return color;
     };
 
+    BacteriumView.prototype.kill = function () {
+      console.log("goone");
+      return this.self.remove();
+    };
+
     BacteriumView.prototype.move = function () {
-      var position;
+      var position, radius;
       position = this.model.get('position');
+      radius = this.model.get('radius');
       this.self.attr("cx", position.x);
       this.self.attr("cy", position.y);
+      window.count = window.count || 1;
+      window.count = window.count + 1;
+      this.self.attr("r", radius);
       if (this.glow) {
         this.removeGlow();
         if (this.removeGlowOnNext) {
@@ -174,6 +183,10 @@
 
     MediumView.prototype.moveBacterium = function (bacterium) {
       return this.bacteriumViews["buid" + (bacterium.get('buid'))].move();
+    };
+
+    MediumView.prototype.kill = function (bacterium) {
+      return this.bacteriumViews["buid" + (bacterium.get('buid'))].kill();
     };
 
     MediumView.prototype.tick = function () {

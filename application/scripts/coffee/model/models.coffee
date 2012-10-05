@@ -41,24 +41,57 @@ class BacteriaModel extends Backbone.Model
 
     @bacteria.add(bac)
 
-  # TODO: rename to collision!!! stop the no not double negatives!
+  bacterialPredation: (predator, prey) ->
+
+    @mediator.kill(prey)
+    @bacteria.remove(prey)
+
+    prey.set
+      'alive': false
+
+    radius1 = predator.get('radius')
+    radius2 = prey.get('radius')
+    totalRadius = radius1 + radius2
+    totalArea = Math.PI * Math.pow(totalRadius, 2)
+
+    newRadius = Math.sqrt(totalArea / Math.PI)
+
+    predator.set
+      'radius': newRadius
+
+
+
+  removeBacterium: (bacterium) ->
+    @bacteria.remove(bacterium)
+
+
   # Check if the given x, y, radius would collide with an existing bacterium
-  noCollision: (position, radius, thisBacterium = false) ->
+  noCollision: (position, radius) ->
 
     collision = false;
 
     @bacteria.forEach (bacterium) ->
-      if (thisBacterium is false) or (bacterium is not thisBacterium)
-        if bacterium.collidesWith(position, radius)
-          console.log("bump")
-          collision = true;
+      if bacterium.collidesWith(position, radius)
+        collision = true;
 
     not collision
+
+  # check if thisBacterium collides with another
+  # return the other if yes
+  bacterialCollision: (thisBacterium) ->
+
+    collision = false;
+
+    @bacteria.forEach (bacterium) ->
+        if (bacterium != thisBacterium) and bacterium.collidesWithBacterium(thisBacterium)
+          collision = bacterium;
+
+    collision
 
   # this model is essentially "the outside world" for a bacterium
   # so it is used as the sense of the bacterium
   # in this case, for collision detection
-  bumpsSomething: (thisBacterium, newPosition) ->
+  bumpsSomething: (thisBacterium) ->
 
     collision = false
     info = {}
@@ -66,9 +99,11 @@ class BacteriaModel extends Backbone.Model
     bumpsWall = @bumpsWall(thisBacterium)
 
     if false is bumpsWall
-      radius = thisBacterium.get('radius')
       #currentPosition = thisBacterium.get('position')
-      collision = not @noCollision(newPosition, radius, thisBacterium)
+      collision = @bacterialCollision(thisBacterium)
+      if collision
+        info.obstacle = 'bacterium'
+        info.bacterium = collision
     else
       collision = true
       info.obstacle = 'wall'
@@ -108,7 +143,8 @@ class BacteriaModel extends Backbone.Model
   move: ->
     setInterval =>
       @bacteria.forEach (bacterium) =>
-        bacterium.update()
+        if bacterium
+          bacterium.update()
       @mediator.tick()
     , Config.Bacterium.tick
 
@@ -129,6 +165,7 @@ class BacteriumModel extends Backbone.Model
         'angle' : Config.Bacterium.notAssigned
         'magnitude': Config.Bacterium.defaultVectorLength
       'age' : 0
+      'alive': true
 
   update: ->
     @move()
@@ -166,12 +203,17 @@ class BacteriumModel extends Backbone.Model
       'angle': vector.angle + _.random(-1 * Config.Bacterium.maxTurnDegrees, Config.Bacterium.maxTurnDegrees)
       'magnitude': vector.magnitude
 
-    collision = @outsideWorld.bumpsSomething(@, newPosition)
+    @set
+      'position': newPosition
+
+    @set
+      'vector': newVector
+
+    collision = @outsideWorld.bumpsSomething(@)
 
     # we bumped into something
-    if false is collision
-      #do nothing
-    else
+    if false != collision
+
       info = collision
       # TODO: move wall into config
       if ('wall' is info.obstacle)
@@ -191,27 +233,48 @@ class BacteriumModel extends Backbone.Model
             newVector.angle = 180
             newPosition.x = newPosition.x - 1
 
+        @set
+          'position': newPosition
 
+        @set
+          'vector': newVector
 
-    @set
-      'position': newPosition
+      if ('bacterium' is info.obstacle)
+        @bacterialFight(info.bacterium)
 
-    @set
-      'vector': newVector
+  bacterialFight: (otherBacterium) ->
+    otherRadius = otherBacterium.get('radius')
+    myRadius = @.get('radius')
+
+    # the tie breaker is here
+    # TODO: think more about randomizing tie breaker, etc.
+    if myRadius >= otherRadius
+      predator = @
+      prey = otherBacterium
+    else
+      predator = otherBacterium
+      prey = @
+
+    prey.set
+      'alive': false
+
+    @outsideWorld.bacterialPredation(predator, prey)
 
   age: ->
     @set
       'age' : @get('age') + 1
 
   collidesWith: (position, radius) ->
+    return false if not @.get('alive')
     @distanceFrom(position) < radius + @get('radius')
 
   collidesWithBacterium: (otherBacterium) ->
-
+    return false if not @.get('alive')
     otherPosition = otherBacterium.get('position')
     otherRadius = otherBacterium.get('radius')
 
-    @collidesWith(otherPosition.x, otherPosition.y, otherRadius)
+    @collidesWith(otherPosition, otherRadius)
+
 
   # TODO: do an x,y quick check to reduce number of sqrts you have to do
   distanceFrom: (otherPosition) ->
