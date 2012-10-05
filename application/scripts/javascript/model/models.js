@@ -33,7 +33,10 @@
       this.bacteria.on("add", function (bacterium) {
         return _this.mediator.bacteriumModelAdded(bacterium);
       });
-      return this.bacteria.on("change:position", function (bacterium) {
+      this.bacteria.on("change:position", function (bacterium) {
+        return _this.mediator.bacteriumMoved(bacterium);
+      });
+      return this.bacteria.on("change:radius", function (bacterium) {
         return _this.mediator.bacteriumMoved(bacterium);
       });
     };
@@ -52,7 +55,7 @@
     };
 
     BacteriaModel.prototype.addBacterium = function (clanid) {
-      var bac, c, maxRadius, minRadius, position, radius;
+      var bac, c, maxRadius, minRadius, position, radius, velocity;
       c = Config;
       minRadius = c.Bacterium.radius.min;
       maxRadius = c.Bacterium.radius.max;
@@ -65,7 +68,8 @@
           break;
         }
       }
-      bac = new BacteriumModel(this.getBuid(), clanid, position, radius, this);
+      velocity = _.random(c.Bacterium.velocity.min, c.Bacterium.velocity.max);
+      bac = new BacteriumModel(this.getBuid(), clanid, position, radius, velocity, this);
       return this.bacteria.add(bac);
     };
 
@@ -183,7 +187,7 @@
       return BacteriumModel.__super__.constructor.apply(this, arguments);
     }
 
-    BacteriumModel.prototype.initialize = function (buid, clanid, position, radius, outsideWorld) {
+    BacteriumModel.prototype.initialize = function (buid, clanid, position, radius, velocity, outsideWorld) {
       this.outsideWorld = outsideWorld;
       return this.set({
         'buid': buid,
@@ -195,10 +199,12 @@
         'radius': radius,
         'vector': {
           'angle': Config.Bacterium.notAssigned,
-          'magnitude': Config.Bacterium.defaultVectorLength
+          'magnitude': velocity
         },
         'age': 0,
-        'alive': true
+        'alive': true,
+        'eaten': [],
+        'strategy': 'Random Movement'
       });
     };
 
@@ -274,7 +280,7 @@
     };
 
     BacteriumModel.prototype.bacterialFight = function (otherBacterium) {
-      var myRadius, otherRadius, predator, prey;
+      var eaten, myRadius, otherRadius, predator, prey;
       otherRadius = otherBacterium.get('radius');
       myRadius = this.get('radius');
       if (myRadius >= otherRadius) {
@@ -287,6 +293,8 @@
       prey.set({
         'alive': false
       });
+      eaten = predator.get('eaten');
+      eaten.push(prey.get('buid'));
       return this.outsideWorld.bacterialPredation(predator, prey);
     };
 

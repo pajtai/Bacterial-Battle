@@ -18,6 +18,9 @@ class BacteriaModel extends Backbone.Model
     @bacteria.on "change:position", (bacterium) =>
       @mediator.bacteriumMoved(bacterium)
 
+    @bacteria.on "change:radius", (bacterium) =>
+      @mediator.bacteriumMoved(bacterium)
+
   addMediator: (@mediator) ->
 
   addPopulation: (population, clanid) ->
@@ -37,7 +40,8 @@ class BacteriaModel extends Backbone.Model
 
       break if @noCollision(position, radius)
 
-    bac = new BacteriumModel(@getBuid(), clanid, position, radius, @)
+    velocity = _.random(c.Bacterium.velocity.min, c.Bacterium.velocity.max)
+    bac = new BacteriumModel(@getBuid(), clanid, position, radius, velocity, @)
 
     @bacteria.add(bac)
 
@@ -154,7 +158,7 @@ class BacteriaModel extends Backbone.Model
 # It is modular and does it's thing
 class BacteriumModel extends Backbone.Model
 
-  initialize: (buid, clanid, position, radius, @outsideWorld) ->
+  initialize: (buid, clanid, position, radius, velocity, @outsideWorld) ->
     @set
       'buid': buid
       'clanid': clanid
@@ -164,9 +168,11 @@ class BacteriumModel extends Backbone.Model
       'radius': radius
       'vector' :
         'angle' : Config.Bacterium.notAssigned
-        'magnitude': Config.Bacterium.defaultVectorLength
+        'magnitude': velocity
       'age' : 0
       'alive': true
+      'eaten' : []
+      'strategy' : 'Random Movement'
 
   update: ->
     @move()
@@ -258,6 +264,10 @@ class BacteriumModel extends Backbone.Model
 
     prey.set
       'alive': false
+
+    eaten = predator.get('eaten')
+    eaten.push(prey.get('buid'))
+
 
     @outsideWorld.bacterialPredation(predator, prey)
 

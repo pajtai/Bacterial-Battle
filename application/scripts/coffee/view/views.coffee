@@ -125,19 +125,25 @@ class MediumView extends Backbone.View
 
   showInfo: ->
     # TODO: have mediator handler this
+    bacterium = @glowingBacterium.model
     position = @glowingBacterium.model.get('position')
     vector = @glowingBacterium.model.get('vector')
     # TODO: update stats per tick
     # use object variables where possible instead of getting from model again, this should be faster
 
     $("#info").html(
-      "<div>buid:  #{@glowingBacterium.buid}</div>
-            <div>clan:  #{@glowingBacterium.clanid}</div>
-            <div>x: #{Math.floor(position.x)}</div>
-            <div>y: #{Math.floor(position.y)}</div>
-            <div>direction: #{vector.angle}</div>
-            <div>magnitude: #{vector.magnitude}</div>
-            <div>age: #{@glowingBacterium.model.get('age')}</div>"
+      "<div class='row well'>
+        <div class='span1'>buid:<br/>  #{@glowingBacterium.buid}</div>
+        <div class='span1'>clan:<br/>  #{@glowingBacterium.clanid}</div>
+        <div class='span1'>Radius:<br/> #{Math.floor(bacterium.get('radius'))}</div>
+        <div class='span2'>Eaten:<br/> #{JSON.stringify(bacterium.get('eaten'))}</div>
+        <div class='span1'>x:<br/> #{Math.floor(position.x)}</div>
+        <div class='span1'>y:<br/> #{Math.floor(position.y)}</div>
+        <div class='span1'>direction:<br/> #{vector.angle}</div>
+        <div class='span1'>magnitude:<br/> #{vector.magnitude}</div>
+        <div class='span1'>age:<br/> #{@glowingBacterium.model.get('age')}</div>
+        <div class='span1'>strategy:<br/> #{bacterium.get('strategy')}</div>
+      </div>"
     )
 
   moveBacterium: (bacterium) ->

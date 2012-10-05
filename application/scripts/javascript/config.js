@@ -19,6 +19,10 @@
       radius: {
         max: 20,
         min: 10
+      },
+      velocity: {
+        max: 10,
+        min: 0
       }
     }
   };

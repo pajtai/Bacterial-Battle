@@ -174,10 +174,11 @@
     };
 
     MediumView.prototype.showInfo = function () {
-      var position, vector;
+      var bacterium, position, vector;
+      bacterium = this.glowingBacterium.model;
       position = this.glowingBacterium.model.get('position');
       vector = this.glowingBacterium.model.get('vector');
-      return $("#info").html("<div>buid:  " + this.glowingBacterium.buid + "</div>            <div>clan:  " + this.glowingBacterium.clanid + "</div>            <div>x: " + (Math.floor(position.x)) + "</div>            <div>y: " + (Math.floor(position.y)) + "</div>            <div>direction: " + vector.angle + "</div>            <div>magnitude: " + vector.magnitude + "</div>            <div>age: " + (this.glowingBacterium.model.get('age')) + "</div>");
+      return $("#info").html("<div class='row well'>        <div class='span1'>buid:<br/>  " + this.glowingBacterium.buid + "</div>        <div class='span1'>clan:<br/>  " + this.glowingBacterium.clanid + "</div>        <div class='span1'>Radius:<br/> " + (Math.floor(bacterium.get('radius'))) + "</div>        <div class='span2'>Eaten:<br/> " + (JSON.stringify(bacterium.get('eaten'))) + "</div>        <div class='span1'>x:<br/> " + (Math.floor(position.x)) + "</div>        <div class='span1'>y:<br/> " + (Math.floor(position.y)) + "</div>        <div class='span1'>direction:<br/> " + vector.angle + "</div>        <div class='span1'>magnitude:<br/> " + vector.magnitude + "</div>        <div class='span1'>age:<br/> " + (this.glowingBacterium.model.get('age')) + "</div>        <div class='span1'>strategy:<br/> " + (bacterium.get('strategy')) + "</div>      </div>");
     };
 
     MediumView.prototype.moveBacterium = function (bacterium) {
