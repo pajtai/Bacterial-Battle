@@ -97,6 +97,12 @@ module.exports = function(grunt) {
                         project.dirs.live + project.files.css + '/bootstrap.css'
                     ],
                     dest: project.dirs.live + project.files.css + '/bootstrap.min.css'
+                },
+                docco: {
+                    src: [
+                        project.dirs.live + project.files.docs + '/docco.css'
+                    ],
+                    dest: project.dirs.live + project.files.docs + '/docco.css'
                 }
             },
 
@@ -162,7 +168,7 @@ module.exports = function(grunt) {
     // The main tasks.
     commonTasks = 'clean:developer clean:appDocs clean:docs docco cp:docs coffee ';
     grunt.registerTask('developer', commonTasks + 'beautify');
-    grunt.registerTask('live',      commonTasks + 'cp:live min cssmin usemin clean:live');
+    grunt.registerTask('live',      commonTasks + 'cp:live min cssmin usemin clean:live clean:bootCss');
 
     grunt.registerTask('reloadServer', 'server reload watch');
 };
