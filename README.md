@@ -12,7 +12,7 @@ The project is also a demo of some useful design concepts, workflows, and Javasc
 
 If you want to clone the project as a developer you would:
 
-1. Make sure you have the following installed git, node, npm, pygments
+1. Make sure you have the following installed git, node, npm, pygments (`sudo easy_install pygments`, not the npm)
 2. Make sure to globally install the following two npms: grunt, docco
 3. Clone the repo using:
 
