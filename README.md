@@ -8,7 +8,7 @@ The game portion is only partially complete.
 
 The project is also a demo of some useful design concepts, workflows, and Javascript tools.
 
-### Developer On Boarding
+### Installation for Developers
 
 If you want to clone the project as a developer you would:
 
