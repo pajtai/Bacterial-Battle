@@ -1,7 +1,6 @@
 (function () {
-  var Config;
 
-  Config = {
+  define({
     BoardWidth: 1130,
     BoardHeight: 500,
     Colors: {
@@ -25,10 +24,6 @@
         min: 0
       }
     }
-  };
-
-  window.BacB = window.BacB || {};
-
-  window.BacB.Config = Config;
+  });
 
 }).call(this);

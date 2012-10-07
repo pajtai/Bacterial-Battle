@@ -62,6 +62,7 @@ The project uses:
         * [Updating of script references in html files](https://github.com/h5bp/node-build-script/blob/master/tasks/usemin.js)
 * Dependency management
     * [NPM](https://npmjs.org/)
+    * AMD - [RequireJS](http://requirejs.org/docs/whyamd.html)
 * Vector graphics
     * [Raphael](http://raphaeljs.com/)
 * Templating and assorted JS utility functionality

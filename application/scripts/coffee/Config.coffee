@@ -1,4 +1,4 @@
-Config =
+define
   BoardWidth: 1130,
   BoardHeight: 500,
   Colors:
@@ -23,11 +23,3 @@ Config =
     velocity:
       max: 10
       min: 0
-
-
-
-# Export globals
-window.BacB = window.BacB or {}
-window.BacB.Config = Config
-
-# TODO: try out: https://github.com/andrewseddon/raphael-zpd
