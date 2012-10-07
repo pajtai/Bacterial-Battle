@@ -37,7 +37,7 @@ module.exports = function(grunt) {
 
             // Remove all junk from compiled only directories
             clean: {
-                developer:  project.dirs.dev    + project.files.javascript,
+                //developer:  project.dirs.dev    + project.files.javascript,
                 appDocs:    project.dirs.dev    + project.files.docs,
                 docs:       project.dirs.docs,
                 live:       project.dirs.live   + project.files.scripts,
@@ -63,31 +63,9 @@ module.exports = function(grunt) {
             },
 
             cp: {
-                live: {
-                    src: project.dirs.dev,
-                    dest: project.dirs.live
-                },
                 docs: {
                     src: project.dirs.docs,
                     dest: project.dirs.dev + project.files.docs
-                }
-            },
-
-            min: {
-                live: {
-                    src: [
-                        project.dirs.live + project.files.vendor + '/jquery.1.8.2.js',
-                        project.dirs.live + project.files.vendor + '/raphael.2.1.0.js',
-                        project.dirs.live + project.files.vendor + '/lodash.0.7.0.js',
-                        project.dirs.live + project.files.vendor + '/backbone.0.9.2.js',
-                        project.dirs.live + project.files.javascript + '/config.js',
-                        project.dirs.live + project.files.javascript + '/mediator/mediator.js',
-                        project.dirs.live + project.files.javascript + '/model/models.js',
-                        project.dirs.live + project.files.javascript + '/view/views.js',
-                        project.dirs.live + project.files.javascript + '/main.js'
-                    ],
-                    dest: project.dirs.live + project.files.script + '/bacterial-battle.js',
-                    separator: ';'
                 }
             },
 
@@ -147,16 +125,41 @@ module.exports = function(grunt) {
             },
 
             requirejs: {
-                appDir: 'application',
-                baseUrl: 'scripts',
-                dir: 'application',
+                appDir: "application/",
+                baseUrl: "scripts/javascript",
+                dir: "targets/live",
+                //Comment out the optimize line if you want
+                //the code minified by UglifyJS.
+                //optimize: "none",
+                shim: {
+                    'lodash': {
+                        'exports': '_'
+                    },
+                    'backbone': {
+                        'deps': ['lodash', 'jquery'],
+                        'exports': 'Backbone'
+                    }
+                },
+                paths: {
+                    'jquery': '../vendor/require-jquery',
+                    'lodash': '../vendor/lodash.0.7.0',
+                    'backbone': '../vendor/backbone.0.9.2',
+                    'raphael': '../vendor/raphael.2.1.0.amd',
+                    'Config': 'Config',
+                    'BacteriaModel': 'model/BacteriaModel',
+                    'BacteriumModel': 'model/BacteriumModel',
+                    'BacteriumCollection': 'model/BacteriumCollection',
+                    'BacteriumView': 'view/BacteriumView',
+                    'MediumView': 'view/MediumView',
+                    'Mediator': 'mediator/Mediator'
+                },
                 modules: [
                     {
-                        name: "main"
+                        name: "main",
+                        exclude: ["jquery"]
                     }
                 ]
             }
-
         };
 
     // Grunt tasks configuration
@@ -180,7 +183,7 @@ module.exports = function(grunt) {
     // The main tasks.
     commonTasks = 'clean:developer clean:appDocs clean:docs docco cp:docs coffee beautify';
     grunt.registerTask('developer', commonTasks);
-    grunt.registerTask('live',      commonTasks + ' cp:live min cssmin usemin clean:live clean:bootCss');
+    grunt.registerTask('live',      commonTasks + ' requirejs min cssmin usemin clean:live clean:bootCss');
 
     grunt.registerTask('reloadServer', 'server reload watch');
 };
