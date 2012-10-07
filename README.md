@@ -73,10 +73,4 @@ The project uses:
     * [jQuery](http://jquery.com/)
 
 
-### TODO:
-
-* Update tasks for requirjs
-    * add bootstrap dropdowns for docs folder
-* Add rjs optimization for live build
-* Add test suites (Jasmine)
-* Add js lint to builds
+### [TODOS and Issues](https://github.com/pajtai/Bacterial-Battle/issues)
