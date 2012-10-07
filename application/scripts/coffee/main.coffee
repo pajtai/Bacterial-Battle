@@ -10,8 +10,6 @@ require.config
         'jquery'
       ]
       'exports': 'Backbone'
-    'raphael':
-      'exports': 'Raphael'
   paths:
     'lodash'              : '../vendor/lodash.0.7.0'
     'backbone'            : '../vendor/backbone.0.9.2'

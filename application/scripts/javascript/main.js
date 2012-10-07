@@ -1,4 +1,4 @@
-
+(function () {
 
   require.config({
     shim: {
@@ -8,9 +8,6 @@
       'backbone': {
         'deps': ['lodash', 'jquery'],
         'exports': 'Backbone'
-      },
-      'raphael': {
-        'exports': 'Raphael'
       }
     },
     paths: {
@@ -39,3 +36,5 @@
     bacteria.addPopulation(15, "c3");
     return bacteria.move();
   });
+
+}).call(this);
