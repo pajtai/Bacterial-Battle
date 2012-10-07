@@ -1,4 +1,4 @@
-(function () {
+
 
   require.config({
     shim: {
@@ -39,5 +39,3 @@
     bacteria.addPopulation(15, "c3");
     return bacteria.move();
   });
-
-}).call(this);

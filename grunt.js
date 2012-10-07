@@ -147,34 +147,12 @@ module.exports = function(grunt) {
             },
 
             requirejs: {
-                dir: project.dirs.dev + '/',
-                appDir: project.dirs.dev + '/',
-                baseUrl: project.dirs.dev +  + project.files.javascript,
-                paths: {
-                    'lodash'              : '../vendor/lodash.0.7.0',
-                    'backbone'            : '../vendor/backbone.0.9.2',
-                    'raphael'             : '../vendor/raphael.2.1.0.amd',
-
-                    'Config'              : 'Config',
-
-                    'BacteriaModel'       : 'model/BacteriaModel',
-                    'BacteriumModel'      : 'model/BacteriumModel',
-                    'BacteriumCollection' : 'model/BacteriumCollection',
-
-                    'BacteriumView'       : 'view/BacteriumView',
-                    'MediumView'          : 'view/MediumView',
-
-                    'Mediator'            : 'mediator/Mediator'
-                },
-                pragmas: {
-                    doExclude: true
-                },
-                skipModuleInsertion: false,
-                optimizeAllPluginResources: true,
-                findNestedDependencies: true,
+                appDir: 'application',
+                baseUrl: 'scripts',
+                dir: 'application',
                 modules: [
                     {
-                        name: "scripts/javascript/main"
+                        name: "main"
                     }
                 ]
             }
