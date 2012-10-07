@@ -1,0 +1,43 @@
+<!DOCTYPE html>  <html> <head>   <title>main.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="Config.html">                 Config.coffee               </a>                                           <a class="source" href="main.html">                 main.coffee               </a>                                           <a class="source" href="Mediator.html">                 Mediator.coffee               </a>                                           <a class="source" href="BacteriaModel.html">                 BacteriaModel.coffee               </a>                                           <a class="source" href="BacteriumCollection.html">                 BacteriumCollection.coffee               </a>                                           <a class="source" href="BacteriumModel.html">                 BacteriumModel.coffee               </a>                                           <a class="source" href="BacteriumView.html">                 BacteriumView.coffee               </a>                                           <a class="source" href="MediumView.html">                 MediumView.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               main.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nx">require</span><span class="p">.</span><span class="nx">config</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>The shim config allows us to configure dependencies for
+scripts that do not call <em>define()</em> to register a module</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">shim:</span>
+    <span class="s1">&#39;lodash&#39;</span><span class="o">:</span>
+      <span class="s1">&#39;exports&#39;</span><span class="o">:</span> <span class="s1">&#39;_&#39;</span>
+    <span class="s1">&#39;backbone&#39;</span><span class="o">:</span>
+      <span class="s1">&#39;deps&#39;</span><span class="o">:</span> <span class="p">[</span>
+        <span class="s1">&#39;lodash&#39;</span>
+        <span class="s1">&#39;jquery&#39;</span>
+      <span class="p">]</span>
+      <span class="s1">&#39;exports&#39;</span><span class="o">:</span> <span class="s1">&#39;Backbone&#39;</span>
+    <span class="s1">&#39;raphael&#39;</span><span class="o">:</span>
+      <span class="s1">&#39;exports&#39;</span><span class="o">:</span> <span class="s1">&#39;Raphael&#39;</span>
+  <span class="nv">paths:</span>
+    <span class="s1">&#39;lodash&#39;</span>              <span class="o">:</span> <span class="s1">&#39;../vendor/lodash.0.7.0&#39;</span>
+    <span class="s1">&#39;backbone&#39;</span>            <span class="o">:</span> <span class="s1">&#39;../vendor/backbone.0.9.2&#39;</span>
+    <span class="s1">&#39;raphael&#39;</span>             <span class="o">:</span> <span class="s1">&#39;../vendor/raphael.2.1.0.amd&#39;</span>
+    <span class="s1">&#39;Config&#39;</span>              <span class="o">:</span> <span class="s1">&#39;Config&#39;</span>
+    <span class="s1">&#39;BacteriaModel&#39;</span>       <span class="o">:</span> <span class="s1">&#39;model/BacteriaModel&#39;</span>
+    <span class="s1">&#39;BacteriumModel&#39;</span>      <span class="o">:</span> <span class="s1">&#39;model/BacteriumModel&#39;</span>
+    <span class="s1">&#39;BacteriumCollection&#39;</span> <span class="o">:</span> <span class="s1">&#39;model/BacteriumCollection&#39;</span>
+    <span class="s1">&#39;BacteriumView&#39;</span>       <span class="o">:</span> <span class="s1">&#39;view/BacteriumView&#39;</span>
+    <span class="s1">&#39;MediumView&#39;</span>          <span class="o">:</span> <span class="s1">&#39;view/MediumView&#39;</span>
+    <span class="s1">&#39;Mediator&#39;</span>            <span class="o">:</span> <span class="s1">&#39;mediator/Mediator&#39;</span>
+
+<span class="nx">require</span> <span class="p">[</span>
+    <span class="s1">&#39;Config&#39;</span>
+    <span class="s1">&#39;MediumView&#39;</span>
+    <span class="s1">&#39;BacteriaModel&#39;</span>
+    <span class="s1">&#39;Mediator&#39;</span>
+  <span class="p">]</span>
+  <span class="p">,</span> <span class="nf">(Config, MediumView, BacteriaModel, Mediator) -&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>setup mediator between model and view</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">paper = </span><span class="k">new</span> <span class="nx">MediumView</span><span class="p">()</span>
+    <span class="nv">bacteria = </span><span class="k">new</span> <span class="nx">BacteriaModel</span><span class="p">()</span>
+
+    <span class="nv">mediator = </span><span class="k">new</span> <span class="nx">Mediator</span><span class="p">(</span><span class="nx">paper</span><span class="p">,</span> <span class="nx">bacteria</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>The mediator is used as the link between the models and the views
+Do not want to link them directly, since as things get more complicated we'll
+want to ensure the order of events in cases of certain multiple updates, etc.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">paper</span><span class="p">.</span><span class="nx">addMediator</span><span class="p">(</span><span class="nx">mediator</span><span class="p">)</span>
+    <span class="nx">bacteria</span><span class="p">.</span><span class="nx">addMediator</span><span class="p">(</span><span class="nx">mediator</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>setup the bacteria - views are now listening via backbone / mediator</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">bacteria</span><span class="p">.</span><span class="nx">addPopulation</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">)</span>
+    <span class="nx">bacteria</span><span class="p">.</span><span class="nx">addPopulation</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">)</span>
+    <span class="nx">bacteria</span><span class="p">.</span><span class="nx">addPopulation</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">)</span>
+
+    <span class="nx">bacteria</span><span class="p">.</span><span class="nx">move</span><span class="p">()</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
