@@ -147,8 +147,8 @@ module.exports = function(grunt) {
             },
 
             requirejs: {
-                dir: project.dirs.dev,
-                appDir: project.dirs.dev,
+                dir: project.dirs.dev + '/',
+                appDir: project.dirs.dev + '/',
                 baseUrl: project.dirs.dev +  + project.files.javascript,
                 paths: {
                     'lodash'              : '../vendor/lodash.0.7.0',
@@ -171,7 +171,12 @@ module.exports = function(grunt) {
                 },
                 skipModuleInsertion: false,
                 optimizeAllPluginResources: true,
-                findNestedDependencies: true
+                findNestedDependencies: true,
+                modules: [
+                    {
+                        name: "scripts/javascript/main"
+                    }
+                ]
             }
 
         };
@@ -190,7 +195,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-beautify');
     grunt.loadNpmTasks('grunt-docco');
     grunt.loadNpmTasks('grunt-css');
-    grunt.loadNpmTasks('grunt-requireks');
+    grunt.loadNpmTasks('grunt-requirejs');
 
     grunt.loadTasks('./tasks/');
 
