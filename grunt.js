@@ -37,11 +37,23 @@ module.exports = function(grunt) {
 
             // Remove all junk from compiled only directories
             clean: {
-                //developer:  project.dirs.dev    + project.files.javascript,
+                developer:  project.dirs.dev    + project.files.javascript,
                 appDocs:    project.dirs.dev    + project.files.docs,
                 docs:       project.dirs.docs,
-                live:       project.dirs.live   + project.files.scripts,
-                bootCss:    project.dirs.live   + project.files.css + '/bootstrap.css'
+                liveMo:       project.dirs.live   + project.files.javascript + '/model',
+                liveMe:       project.dirs.live   + project.files.javascript + '/mediator',
+                liveVi:       project.dirs.live   + project.files.javascript + '/view',
+                bootCss:    project.dirs.live   + project.files.css + '/bootstrap.css',
+                coffee: project.dirs.live + project.files.coffee,
+                config: project.dirs.live + project.files.javascript + '/Config.js',
+                v1: project.dirs.live + project.files.vendor + '/backbone.0.9.2.js',
+                v2: project.dirs.live + project.files.vendor + '/eve.0.3.4.js',
+                v3: project.dirs.live + project.files.vendor + '/jquery.1.8.2.js',
+                v4: project.dirs.live + project.files.vendor + '/lodash.0.7.0.js',
+                v5: project.dirs.live + project.files.vendor + '/raphael.2.1.0.amd.js',
+                v6: project.dirs.live + project.files.vendor + '/raphael.2.1.0.core.js',
+                v7: project.dirs.live + project.files.vendor + '/raphael.2.1.0.svg.js',
+                v8: project.dirs.live + project.files.vendor + '/raphael.2.1.0.vml.js'
             },
 
             coffee: {
@@ -183,7 +195,7 @@ module.exports = function(grunt) {
     // The main tasks.
     commonTasks = 'clean:developer clean:appDocs clean:docs docco cp:docs coffee beautify';
     grunt.registerTask('developer', commonTasks);
-    grunt.registerTask('live',      commonTasks + ' requirejs min cssmin usemin clean:live clean:bootCss');
+    grunt.registerTask('live',      commonTasks + ' requirejs cssmin usemin clean:liveMo clean:liveMe clean:liveVi clean:bootCss clean:coffee clean:config clean:v1 clean:v2 clean:v3 clean:v4 clean:v5 clean:v6 clean:v7 clean:v8');
 
     grunt.registerTask('reloadServer', 'server reload watch');
 };
