@@ -31,17 +31,17 @@ module.exports = function(grunt) {
 
         }
 
-        },
+        },t
 
         tasksConfig = {
 
             // Remove all junk from compiled only directories
             clean: {
-                developer: project.dirs.dev   + project.files.javascript,
-                appDocs: project.dirs.dev + project.files.docs,
-                docs: project.dirs.docs,
-                live:      project.dirs.live  + project.files.scripts,
-                bootCss: project.dirs.live + project.files.css + '/bootstrap.css'
+                developer:  project.dirs.dev    + project.files.javascript,
+                appDocs:    project.dirs.dev    + project.files.docs,
+                docs:       project.dirs.docs,
+                live:       project.dirs.live   + project.files.scripts,
+                bootCss:    project.dirs.live   + project.files.css + '/bootstrap.css'
             },
 
             coffee: {
@@ -144,6 +144,34 @@ module.exports = function(grunt) {
                     project.dirs.dev + '/' + project.files.any + project.files.dot.coffee
                 ],
                 tasks: 'clean:developer coffee beautify reload'
+            },
+
+            requirejs: {
+                dir: project.dirs.dev,
+                appDir: project.dirs.dev,
+                baseUrl: project.dirs.dev +  + project.files.javascript,
+                paths: {
+                    'lodash'              : '../vendor/lodash.0.7.0',
+                    'backbone'            : '../vendor/backbone.0.9.2',
+                    'raphael'             : '../vendor/raphael.2.1.0.amd',
+
+                    'Config'              : 'Config',
+
+                    'BacteriaModel'       : 'model/BacteriaModel',
+                    'BacteriumModel'      : 'model/BacteriumModel',
+                    'BacteriumCollection' : 'model/BacteriumCollection',
+
+                    'BacteriumView'       : 'view/BacteriumView',
+                    'MediumView'          : 'view/MediumView',
+
+                    'Mediator'            : 'mediator/Mediator'
+                },
+                pragmas: {
+                    doExclude: true
+                },
+                skipModuleInsertion: false,
+                optimizeAllPluginResources: true,
+                findNestedDependencies: true
             }
 
         };
@@ -162,6 +190,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-beautify');
     grunt.loadNpmTasks('grunt-docco');
     grunt.loadNpmTasks('grunt-css');
+    grunt.loadNpmTasks('grunt-requireks');
 
     grunt.loadTasks('./tasks/');
 

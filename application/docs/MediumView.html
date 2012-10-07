@@ -1,0 +1,68 @@
+<!DOCTYPE html>  <html> <head>   <title>MediumView.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="Config.html">                 Config.coffee               </a>                                           <a class="source" href="main.html">                 main.coffee               </a>                                           <a class="source" href="Mediator.html">                 Mediator.coffee               </a>                                           <a class="source" href="BacteriaModel.html">                 BacteriaModel.coffee               </a>                                           <a class="source" href="BacteriumCollection.html">                 BacteriumCollection.coffee               </a>                                           <a class="source" href="BacteriumModel.html">                 BacteriumModel.coffee               </a>                                           <a class="source" href="BacteriumView.html">                 BacteriumView.coffee               </a>                                           <a class="source" href="MediumView.html">                 MediumView.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               MediumView.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nx">define</span> <span class="p">[</span>
+  <span class="s1">&#39;jquery&#39;</span>
+  <span class="s1">&#39;backbone&#39;</span>
+  <span class="s1">&#39;raphael&#39;</span>
+  <span class="s1">&#39;Config&#39;</span>
+  <span class="s1">&#39;BacteriumView&#39;</span>
+<span class="p">]</span>
+<span class="p">,</span> <span class="nf">($, Backbone, Raphael, Config, BacteriumView) -&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>The view for an individual bacterium
+This is a slight deviation from backbone, since this view isn't really a DOM element. It is a
+a graphic which has a DOM element attached to it</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>The medium on which the bacteria live</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">class</span> <span class="nx">MediumView</span> <span class="k">extends</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span>
+
+    <span class="nv">el: </span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#medium&quot;</span><span class="p">)</span>
+
+    <span class="nv">initialize: </span><span class="o">-&gt;</span>
+      <span class="nx">@render</span><span class="p">()</span>
+      <span class="vi">@bacteriumViews = </span><span class="p">{}</span>
+      <span class="vi">@glowingBacterium = </span><span class="kc">false</span>
+
+    <span class="nv">addMediator: </span><span class="nf">(@mediator) -&gt;</span>
+
+    <span class="nv">render: </span><span class="o">-&gt;</span>
+      <span class="vi">@paper = </span><span class="nx">Raphael</span><span class="p">(</span><span class="nx">@el</span><span class="p">,</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">BoardWidth</span><span class="p">,</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">BoardHeight</span><span class="p">)</span>
+
+    <span class="nv">raphael: </span><span class="o">-&gt;</span>
+      <span class="nx">@paper</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>TODO: move is not working</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">addBacterium: </span><span class="nf">(bacterium) -&gt;</span>
+      <span class="nv">bacteriumView = </span><span class="k">new</span> <span class="nx">BacteriumView</span><span class="p">({</span><span class="nv">model: </span><span class="nx">bacterium</span><span class="p">})</span>
+      <span class="nx">@bacteriumViews</span><span class="p">[</span><span class="s2">&quot;buid#{bacterium.get(&#39;buid&#39;)}&quot;</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">bacteriumView</span>
+      <span class="nx">bacteriumView</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">@paper</span><span class="p">)</span>
+
+      <span class="nx">bacteriumView</span><span class="p">.</span><span class="nx">addListener</span> <span class="o">=&gt;</span>
+        <span class="k">if</span> <span class="nx">@glowingBacterium</span>
+          <span class="nx">@glowingBacterium</span><span class="p">.</span><span class="nx">removeGlowPermanently</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nx">@glowingBacterium</span> <span class="o">is</span> <span class="nx">bacteriumView</span>
+          <span class="vi">@glowingBacterium = </span><span class="kc">false</span>
+        <span class="k">else</span>
+          <span class="vi">@glowingBacterium = </span><span class="nx">bacteriumView</span>
+          <span class="nx">@glowingBacterium</span><span class="p">.</span><span class="nx">addGlow</span><span class="p">()</span>
+          <span class="nx">@showInfo</span><span class="p">()</span>
+
+    <span class="nv">showInfo: </span><span class="o">-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>TODO: have mediator handler this</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nv">bacterium = </span><span class="nx">@glowingBacterium</span><span class="p">.</span><span class="nx">model</span>
+      <span class="nv">position = </span><span class="nx">@glowingBacterium</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;position&#39;</span><span class="p">)</span>
+      <span class="nv">vector = </span><span class="nx">@glowingBacterium</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;vector&#39;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>TODO: update stats per tick
+use object variables where possible instead of getting from model again, this should be faster</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#info&quot;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span>
+        <span class="s2">&quot;&lt;div class=&#39;row well&#39;&gt;</span>
+<span class="s2">          &lt;div class=&#39;span1&#39;&gt;buid:&lt;br/&gt;  #{@glowingBacterium.buid}&lt;/div&gt;</span>
+<span class="s2">          &lt;div class=&#39;span1&#39;&gt;clan:&lt;br/&gt;  #{@glowingBacterium.clanid}&lt;/div&gt;</span>
+<span class="s2">          &lt;div class=&#39;span1&#39;&gt;Radius:&lt;br/&gt; #{Math.floor(bacterium.get(&#39;radius&#39;))}&lt;/div&gt;</span>
+<span class="s2">          &lt;div class=&#39;span2&#39;&gt;Eaten:&lt;br/&gt; #{JSON.stringify(bacterium.get(&#39;eaten&#39;))}&lt;/div&gt;</span>
+<span class="s2">          &lt;div class=&#39;span1&#39;&gt;x:&lt;br/&gt; #{Math.floor(position.x)}&lt;/div&gt;</span>
+<span class="s2">          &lt;div class=&#39;span1&#39;&gt;y:&lt;br/&gt; #{Math.floor(position.y)}&lt;/div&gt;</span>
+<span class="s2">          &lt;div class=&#39;span1&#39;&gt;direction:&lt;br/&gt; #{vector.angle}&lt;/div&gt;</span>
+<span class="s2">          &lt;div class=&#39;span1&#39;&gt;magnitude:&lt;br/&gt; #{vector.magnitude}&lt;/div&gt;</span>
+<span class="s2">          &lt;div class=&#39;span1&#39;&gt;age:&lt;br/&gt; #{@glowingBacterium.model.get(&#39;age&#39;)}&lt;/div&gt;</span>
+<span class="s2">          &lt;div class=&#39;span1&#39;&gt;strategy:&lt;br/&gt; #{bacterium.get(&#39;strategy&#39;)}&lt;/div&gt;</span>
+<span class="s2">        &lt;/div&gt;&quot;</span>
+      <span class="p">)</span>
+
+    <span class="nv">moveBacterium: </span><span class="nf">(bacterium) -&gt;</span>
+      <span class="nx">@bacteriumViews</span><span class="p">[</span><span class="s2">&quot;buid#{bacterium.get(&#39;buid&#39;)}&quot;</span><span class="p">].</span><span class="nx">move</span><span class="p">()</span>
+
+    <span class="nv">kill: </span><span class="nf">(bacterium) -&gt;</span>
+      <span class="nx">@bacteriumViews</span><span class="p">[</span><span class="s2">&quot;buid#{bacterium.get(&#39;buid&#39;)}&quot;</span><span class="p">].</span><span class="nx">kill</span><span class="p">()</span>
+
+    <span class="nv">tick: </span><span class="o">-&gt;</span>
+      <span class="k">if</span> <span class="nx">@glowingBacterium</span>
+        <span class="nx">@showInfo</span><span class="p">()</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
