@@ -75,5 +75,8 @@ The project uses:
 
 ### TODO:
 
+* Update tasks for requirjs
+    * add bootstrap dropdowns for docs folder
+* Add rjs optimization for live build
 * Add test suites (Jasmine)
 * Add js lint to builds
