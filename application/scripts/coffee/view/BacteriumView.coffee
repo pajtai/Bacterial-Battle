@@ -34,7 +34,6 @@ define [
       if not color
 
         if Config.Colors.used.length is Config.Colors.choices.length
-          console.log("ERROR: too many clans! Add colors")
           return "#000000"
 
         loop
@@ -67,7 +66,6 @@ define [
       if @glow
         @removeGlow()
         if @removeGlowOnNext
-          console.log("bam")
           @glow = false
           @removeGlowOnNext = false
         else

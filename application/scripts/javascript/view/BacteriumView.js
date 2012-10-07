@@ -57,7 +57,6 @@
         color = Config.Colors.clanid[this.clanid];
         if (!color) {
           if (Config.Colors.used.length === Config.Colors.choices.length) {
-            console.log("ERROR: too many clans! Add colors");
             return "#000000";
           }
           while (true) {
@@ -89,7 +88,6 @@
         if (this.glow) {
           this.removeGlow();
           if (this.removeGlowOnNext) {
-            console.log("bam");
             this.glow = false;
             return this.removeGlowOnNext = false;
           } else {
