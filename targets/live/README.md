@@ -1,1 +1,1 @@
-The branch for the (Bacterial Battle Web Page)[http://pajtai.github.com/Bacterial-Battle/]
+The branch for the [Bacterial Battle Web Page](http://pajtai.github.com/Bacterial-Battle)
