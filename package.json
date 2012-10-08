@@ -2,7 +2,7 @@
     "name": "Bacterial-Battle",
     "title": "Bacterial Battle",
     "description": "JavaScript fitness / evolution game",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "homepage": "https://github.com/pajtai/Bacterial-Battle",
     "author": {
         "name": "Peter Ajtai",
