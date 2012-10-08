@@ -1,6 +1,8 @@
 Bacterial-Battle
 ================
 
+_on v0.0.2_
+
 [View the Demo and Documentation](http://pajtai.github.com/Bacterial-Battle/)
 
 A game where bacteria battle to survive and evolve.
